@@ -1,5 +1,5 @@
-import { TokenType } from "../types/enums";
-import { SpecType } from "../types/types";
+import { TokenType } from '../types/enums';
+import { SpecType } from '../types/types';
 
 export const SPECS: SpecType[] = [
   /** numbers  */
@@ -19,16 +19,16 @@ export const SPECS: SpecType[] = [
   /** white spaces */
   {
     _regex: /^\s+/,
-    type: null
+    type: null,
   },
   /** skip single line comments  */
   {
     _regex: /^\/\/.*/,
-    type: null
+    type: null,
   },
   /** skip multi line comments  */
   {
     _regex: /^\/\*[\s\S]*?\*\//,
-    type: null
-  }
+    type: null,
+  },
 ];

@@ -40,12 +40,12 @@ export class Parser {
 
   Literal() {
     switch (this.lookahead.type) {
-      case TokenType.NUMBER: return this.NumericLiteral();
-      case TokenType.STRING: return this.StringLiteral();
+      case TokenType.NUMBER:
+        return this.NumericLiteral();
+      case TokenType.STRING:
+        return this.StringLiteral();
     }
-    throw new SyntaxError(
-      `Literal: Unexpected literal found`
-    )
+    throw new SyntaxError(`Literal: Unexpected literal found`);
   }
 
   /** this should get the numeric literal from the token */
@@ -63,7 +63,7 @@ export class Parser {
     return {
       type: Literals.StringLiteral,
       value: String(token.value).slice(1, -1), // strip double quotes around the value
-    }
+    };
   }
 
   /**

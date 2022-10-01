@@ -36,9 +36,9 @@ export class Tokenizer {
       const token = this.regexMatch(newString, spec._regex, spec.type);
       if (token === null) continue;
 
-      /** 
-       * if the token contains white spaces, 
-       * skip it and get next token 
+      /**
+       * if the token contains white spaces,
+       * skip it and get next token
        * */
       if (token.type === null) return this.getNextToken();
 

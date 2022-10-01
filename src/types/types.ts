@@ -6,6 +6,6 @@ export type Token = {
 };
 
 export type SpecType = {
-  _regex: RegExp,
-  type: TokenType
+  _regex: RegExp;
+  type: TokenType;
 };
