@@ -19,9 +19,9 @@ export type ExpressionToken = {
 };
 
 export type BlockToken = {
-  type: StatementType,
-  body: any
-}
+  type: StatementType;
+  body: any;
+};
 
 export type StatementToken = ExpressionToken | BlockToken;
 

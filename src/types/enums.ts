@@ -8,7 +8,7 @@ export enum TokenType {
   NUMBER = 'NUMBER',
   SEMI_COLON = ';',
   BLOCK_START = '{',
-  BLOCK_END = '}'
+  BLOCK_END = '}',
 }
 
 export enum ProgramType {

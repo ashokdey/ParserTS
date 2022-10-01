@@ -1,6 +1,17 @@
 import { Tokenizer } from '../tokenizer/tokenizer';
-import { LiteralType, ProgramType, StatementType, TokenType } from '../types/enums';
-import { BlockToken, ExpressionToken, LiteralToken, StatementToken, Token } from '../types/types';
+import {
+  LiteralType,
+  ProgramType,
+  StatementType,
+  TokenType,
+} from '../types/enums';
+import {
+  BlockToken,
+  ExpressionToken,
+  LiteralToken,
+  StatementToken,
+  Token,
+} from '../types/types';
 
 export class Parser {
   private _string = '';
@@ -49,7 +60,8 @@ export class Parser {
 
   Statement(): StatementToken {
     switch (this.lookahead.type) {
-      case TokenType.BLOCK_START: return this.BlockStatement()
+      case TokenType.BLOCK_START:
+        return this.BlockStatement();
       default:
         return this.ExpressionStatement();
     }
@@ -60,12 +72,13 @@ export class Parser {
     /** when a block starts, keep getting lookahead until the block ends */
     const body =
       this.lookahead.type !== TokenType.BLOCK_END
-        ? this.StatementList(TokenType.BLOCK_END) : []; // return empty list
+        ? this.StatementList(TokenType.BLOCK_END)
+        : []; // return empty list
     this.eat(TokenType.BLOCK_END);
     return {
       type: StatementType.BlockStatement,
       body,
-    }
+    };
   }
 
   ExpressionStatement(): ExpressionToken {
