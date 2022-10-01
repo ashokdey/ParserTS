@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ES2015",
+    "types": ["node", "jest"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "outDir": "./dist"
+  },
+  "compileOnSave": true,
+  "include": ["./src"],
+  "exclude": ["**/*.test.*", "**/__mocks__/*", "**/__tests__/*"]
+}
