@@ -1,4 +1,4 @@
-import { LiteralType, ProgramType, TokenType } from './enums';
+import { LiteralType, ProgramType, StatementType, TokenType } from './enums';
 
 /** the token extracted from the raw string stream */
 export type Token = {
@@ -14,9 +14,16 @@ export type LiteralToken = {
 
 /** the token identified as an expression */
 export type ExpressionToken = {
-  type: string;
+  type: StatementType;
   expression: any;
 };
+
+export type BlockToken = {
+  type: StatementType,
+  body: any
+}
+
+export type StatementToken = ExpressionToken | BlockToken;
 
 /** tokenizer rules object type */
 export type SpecType = {

@@ -1,6 +1,6 @@
 import { Tokenizer } from '../tokenizer/tokenizer';
-import { LiteralType, ProgramType, TokenType } from '../types/enums';
-import { ExpressionToken, LiteralToken, Token } from '../types/types';
+import { LiteralType, ProgramType, StatementType, TokenType } from '../types/enums';
+import { BlockToken, ExpressionToken, LiteralToken, StatementToken, Token } from '../types/types';
 
 export class Parser {
   private _string = '';
@@ -33,29 +33,46 @@ export class Parser {
   Program() {
     const node = this.StatementList();
     return {
-      type: 'Program',
+      type: ProgramType.Program,
       body: node,
     };
   }
 
-  StatementList() {
+  StatementList(stopLookahead: TokenType = null): StatementToken[] {
     const statementList = [this.Statement()];
-    while (this.lookahead !== null) {
+    while (this.lookahead !== null && this.lookahead.type !== stopLookahead) {
       statementList.push(this.Statement());
     }
 
     return statementList;
   }
 
-  Statement() {
-    return this.ExpressionStatement();
+  Statement(): StatementToken {
+    switch (this.lookahead.type) {
+      case TokenType.BLOCK_START: return this.BlockStatement()
+      default:
+        return this.ExpressionStatement();
+    }
+  }
+
+  BlockStatement() {
+    this.eat(TokenType.BLOCK_START);
+    /** when a block starts, keep getting lookahead until the block ends */
+    const body =
+      this.lookahead.type !== TokenType.BLOCK_END
+        ? this.StatementList(TokenType.BLOCK_END) : []; // return empty list
+    this.eat(TokenType.BLOCK_END);
+    return {
+      type: StatementType.BlockStatement,
+      body,
+    }
   }
 
   ExpressionStatement(): ExpressionToken {
     const expression = this.Expression();
     this.eat(TokenType.SEMI_COLON);
     return {
-      type: ProgramType.ExpressionStatement,
+      type: StatementType.ExpressionStatement,
       expression,
     };
   }
