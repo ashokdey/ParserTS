@@ -34,5 +34,5 @@ export const TokenizationSpecs: SpecType[] = [
   {
     _regex: /^;/,
     type: TokenType.SEMI_COLON,
-  }
+  },
 ];

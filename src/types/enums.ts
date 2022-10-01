@@ -6,11 +6,11 @@ export enum LiteralType {
 export enum TokenType {
   STRING = 'STRING',
   NUMBER = 'NUMBER',
-  SEMI_COLON = ';'
+  SEMI_COLON = ';',
 }
 
 export enum ProgramType {
   Program = 'Program',
   Literal = 'Literal',
-  ExpressionStatement = 'ExpressionStatement'
+  ExpressionStatement = 'ExpressionStatement',
 }

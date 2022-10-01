@@ -14,9 +14,9 @@ export type LiteralToken = {
 
 /** the token identified as an expression */
 export type ExpressionToken = {
-  type: string,
-  expression: any
-}
+  type: string;
+  expression: any;
+};
 
 /** tokenizer rules object type */
 export type SpecType = {

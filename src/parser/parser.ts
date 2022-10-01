@@ -57,7 +57,7 @@ export class Parser {
     return {
       type: ProgramType.ExpressionStatement,
       expression,
-    }
+    };
   }
 
   Expression(): LiteralToken {
