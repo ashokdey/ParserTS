@@ -1,7 +1,14 @@
 import { Parser } from './parser/parser';
 
 const parser = new Parser();
-const program = '42';
+const program = `   
+// number
+
+/*
+Documentations
+*/
+
+"hello world"`;
 const ast = parser.parse(program);
 
-console.log(ast);
+console.log(JSON.stringify(ast, null, 2));

@@ -1,9 +1,11 @@
 import { Tokenizer } from '../tokenizer/tokenizer';
+import { Literals, TokenType } from '../types/enums';
+import { Token } from '../types/types';
 
 export class Parser {
   private _string = '';
   private tokenizer: Tokenizer;
-  private lookahead: any;
+  private lookahead: Token;
 
   constructor() {
     this.tokenizer = new Tokenizer();
@@ -29,26 +31,46 @@ export class Parser {
 
   /** the main entry point for the parser  */
   Program() {
+    const node = this.Literal();
     return {
       type: 'Program',
-      body: this.NumericLiteral(),
+      body: node,
     };
+  }
+
+  Literal() {
+    switch (this.lookahead.type) {
+      case TokenType.NUMBER: return this.NumericLiteral();
+      case TokenType.STRING: return this.StringLiteral();
+    }
+    throw new SyntaxError(
+      `Literal: Unexpected literal found`
+    )
   }
 
   /** this should get the numeric literal from the token */
   NumericLiteral() {
-    const token: any = this.eat('NUMBER');
+    const token = this.eat(TokenType.NUMBER);
     return {
-      type: 'NumericLiteral',
+      type: Literals.NumericLiteral,
       value: Number(token.value),
     };
+  }
+
+  /** this should get the string literal from the token */
+  StringLiteral() {
+    const token = this.eat(TokenType.STRING);
+    return {
+      type: Literals.StringLiteral,
+      value: String(token.value).slice(1, -1), // strip double quotes around the value
+    }
   }
 
   /**
    * eat is used to consume the current token and
    * advance the tokenizer to the next token
    * */
-  eat(tokenType: string) {
+  eat(tokenType: string): Token {
     const token = this.lookahead;
 
     if (token === null) {
@@ -57,7 +79,7 @@ export class Parser {
 
     if (token.type !== tokenType) {
       throw new SyntaxError(
-        `Unexpected token: ${token.value}, expected: ${tokenType}`,
+        `Unexpected token: ${token.type}, expected: ${tokenType}`,
       );
     }
 

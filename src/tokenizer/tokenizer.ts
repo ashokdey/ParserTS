@@ -1,4 +1,6 @@
-import { Token } from '../types/types';
+import { SPECS } from '../system/specs';
+import { TokenType } from '../types/enums';
+import { SpecType, Token } from '../types/types';
 
 /**
  * the tokenizer class is responsible for
@@ -30,18 +32,31 @@ export class Tokenizer {
     /** take the string from the cursor position */
     const newString = this._string.slice(this.cursor);
 
-    /** if the first char is a number, extract out the number */
-    if (!Number.isNaN(Number(newString[0]))) {
-      let num = '';
-      // keep going until we are getting digits
-      while (!Number.isNaN(Number(newString[this.cursor]))) {
-        num += newString[this.cursor++];
-      }
-      /** since now we have the number, let's return a NUMBER token */
+    for (const spec of SPECS) {
+      const token = this.regexMatch(newString, spec._regex, spec.type);
+      if (token === null) continue;
+
+      /** 
+       * if the token contains white spaces, 
+       * skip it and get next token 
+       * */
+      if (token.type === null) return this.getNextToken();
+
+      /** return the token */
+      return token;
+    }
+    throw new SyntaxError(`Unexpected token: '${newString[0]}'`);
+  }
+
+  private regexMatch(_string: string, _regex: RegExp, type: string): Token {
+    const matched = _regex.exec(_string);
+    if (matched !== null) {
+      this.cursor += matched[0].length;
       return {
-        type: 'NUMBER',
-        value: Number(num),
+        type,
+        value: matched[0],
       };
     }
+    return null;
   }
 }
