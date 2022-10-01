@@ -1,7 +1,7 @@
 import { TokenType } from '../types/enums';
 import { SpecType } from '../types/types';
 
-export const SPECS: SpecType[] = [
+export const TokenizationSpecs: SpecType[] = [
   /** numbers  */
   {
     _regex: /^\d+/,
@@ -31,4 +31,8 @@ export const SPECS: SpecType[] = [
     _regex: /^\/\*[\s\S]*?\*\//,
     type: null,
   },
+  {
+    _regex: /^;/,
+    type: TokenType.SEMI_COLON,
+  }
 ];

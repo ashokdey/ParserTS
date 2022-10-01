@@ -1,6 +1,6 @@
 import { Tokenizer } from '../tokenizer/tokenizer';
-import { Literals, TokenType } from '../types/enums';
-import { Token } from '../types/types';
+import { LiteralType, ProgramType, TokenType } from '../types/enums';
+import { ExpressionToken, LiteralToken, Token } from '../types/types';
 
 export class Parser {
   private _string = '';
@@ -31,14 +31,40 @@ export class Parser {
 
   /** the main entry point for the parser  */
   Program() {
-    const node = this.Literal();
+    const node = this.StatementList();
     return {
       type: 'Program',
       body: node,
     };
   }
 
-  Literal() {
+  StatementList() {
+    const statementList = [this.Statement()];
+    while (this.lookahead !== null) {
+      statementList.push(this.Statement());
+    }
+
+    return statementList;
+  }
+
+  Statement() {
+    return this.ExpressionStatement();
+  }
+
+  ExpressionStatement(): ExpressionToken {
+    const expression = this.Expression();
+    this.eat(TokenType.SEMI_COLON);
+    return {
+      type: ProgramType.ExpressionStatement,
+      expression,
+    }
+  }
+
+  Expression(): LiteralToken {
+    return this.Literal();
+  }
+
+  Literal(): LiteralToken {
     switch (this.lookahead.type) {
       case TokenType.NUMBER:
         return this.NumericLiteral();
@@ -49,19 +75,19 @@ export class Parser {
   }
 
   /** this should get the numeric literal from the token */
-  NumericLiteral() {
+  NumericLiteral(): LiteralToken {
     const token = this.eat(TokenType.NUMBER);
     return {
-      type: Literals.NumericLiteral,
+      type: LiteralType.NumericLiteral,
       value: Number(token.value),
     };
   }
 
   /** this should get the string literal from the token */
-  StringLiteral() {
+  StringLiteral(): LiteralToken {
     const token = this.eat(TokenType.STRING);
     return {
-      type: Literals.StringLiteral,
+      type: LiteralType.StringLiteral,
       value: String(token.value).slice(1, -1), // strip double quotes around the value
     };
   }

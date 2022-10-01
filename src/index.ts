@@ -8,7 +8,9 @@ const program = `
 Documentations
 */
 
-"hello world"`;
+42;
+
+"hello world";`;
 const ast = parser.parse(program);
 
 console.log(JSON.stringify(ast, null, 2));
