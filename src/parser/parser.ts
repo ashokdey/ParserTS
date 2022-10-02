@@ -1,11 +1,11 @@
-import { AST, ASTNode } from '../ast/Factory';
+import { AST } from '../ast/Factory';
 import { Tokenizer } from '../tokenizer/tokenizer';
 import { ASTType, TokenType } from '../types/enums';
 import {
+  ASTNode,
   ExpressionNode,
   LiteralNode,
   StatementNode,
-  StatementToken,
   Token,
 } from '../types/types';
 
@@ -15,6 +15,7 @@ export class Parser {
   private lookahead: Token;
   private factory: ASTNode;
 
+  /** initialize with the tokenizer and the AST factory */
   constructor() {
     this.tokenizer = new Tokenizer();
     this.factory = new AST(ASTType.Default).getFactory();
@@ -43,7 +44,7 @@ export class Parser {
     return this.factory.Program(this.StatementList());
   }
 
-  StatementList(stopLookahead: TokenType = null): StatementToken[] | any[] {
+  StatementList(stopLookahead: TokenType = null): StatementNode[] {
     const statementList = [this.Statement()];
     while (this.lookahead !== null && this.lookahead.type !== stopLookahead) {
       statementList.push(this.Statement());
