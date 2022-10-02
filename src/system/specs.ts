@@ -3,46 +3,35 @@ import { SpecType } from '../types/types';
 
 export const TokenizationSpecs: SpecType[] = [
   /** numbers  */
-  {
-    _regex: /^\d+/,
-    type: TokenType.NUMBER,
-  },
-  /** strings  */
-  {
-    _regex: /^"[^"]*"/,
-    type: TokenType.STRING,
-  },
-  {
-    _regex: /^'[^"]*'/,
-    type: TokenType.STRING,
-  },
+  { _regex: /^\d+/, type: TokenType.NUMBER },
+
+  /** strings with double & single quotes */
+  { _regex: /^"[^"]*"/, type: TokenType.STRING },
+  { _regex: /^'[^"]*'/, type: TokenType.STRING },
+
   /** white spaces */
-  {
-    _regex: /^\s+/,
-    type: null,
-  },
+  { _regex: /^\s+/, type: null },
+
+  /**
+   * Comments
+   */
   /** skip single line comments  */
-  {
-    _regex: /^\/\/.*/,
-    type: null,
-  },
+  { _regex: /^\/\/.*/, type: null },
   /** skip multi line comments  */
-  {
-    _regex: /^\/\*[\s\S]*?\*\//,
-    type: null,
-  },
+  { _regex: /^\/\*[\s\S]*?\*\//, type: null },
+
+  /**
+   * Symbols and delimiters
+   */
   /** processing a semicolon as a statement */
-  {
-    _regex: /^;/,
-    type: TokenType.SEMI_COLON,
-  },
+  { _regex: /^;/, type: TokenType.SEMI_COLON },
   /** process block scope  */
-  {
-    _regex: /^{/,
-    type: TokenType.BLOCK_START,
-  },
-  {
-    _regex: /^}/,
-    type: TokenType.BLOCK_END,
-  },
+  { _regex: /^{/, type: TokenType.BLOCK_START },
+  { _regex: /^}/, type: TokenType.BLOCK_END },
+
+  /**
+   * Mathematical operators like +. -, *, /
+   */
+  //eslint-disable-next-line
+  { _regex: /^[+\-]/, type: TokenType.ADD_OPERATOR },
 ];

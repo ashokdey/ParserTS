@@ -1,6 +1,6 @@
 import { AST } from '../ast/Factory';
 import { Tokenizer } from '../tokenizer/tokenizer';
-import { ASTType, TokenType } from '../types/enums';
+import { ASTType, ExpressionType, TokenType } from '../types/enums';
 import {
   ASTNode,
   ExpressionNode,
@@ -44,7 +44,7 @@ export class Parser {
     return this.factory.Program(this.StatementList());
   }
 
-  StatementList(stopLookahead: TokenType = null): StatementNode[] {
+  StatementList(stopLookahead: TokenType = null): ExpressionNode[] {
     const statementList = [this.Statement()];
     while (this.lookahead !== null && this.lookahead.type !== stopLookahead) {
       statementList.push(this.Statement());
@@ -57,7 +57,7 @@ export class Parser {
    * {} block statement
    * ; empty statement
    */
-  Statement(): StatementNode {
+  Statement(): StatementNode | ExpressionNode {
     switch (this.lookahead.type) {
       case TokenType.SEMI_COLON:
         return this.EmptyStatement();
@@ -101,8 +101,25 @@ export class Parser {
     return this.factory.ExpressionStatement(expression);
   }
 
-  Expression(): LiteralNode {
-    return this.Literal();
+  Expression(): ExpressionNode {
+    return this.AdditiveExpression();
+  }
+
+  AdditiveExpression(): ExpressionNode {
+    let left: ExpressionNode = this.Literal();
+
+    while (this.lookahead.type === TokenType.ADD_OPERATOR) {
+      const operator = this.eat(TokenType.ADD_OPERATOR).value; // remember to take the value only not the token
+      const right = this.Literal();
+
+      left = {
+        type: ExpressionType.BinaryExpression,
+        operator,
+        left,
+        right,
+      };
+    }
+    return left;
   }
 
   /** Literal returns either a numeric literal or a string literal */
@@ -133,7 +150,7 @@ export class Parser {
    * eat is used to consume the current token and
    * advance the tokenizer to the next token
    * */
-  private eat(tokenType: string): Token {
+  private eat(tokenType: TokenType): Token {
     const token = this.lookahead;
 
     if (token === null) {

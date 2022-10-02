@@ -1,6 +1,6 @@
 import { DefaultASTFactory } from '../ast/DefaultFactory';
 import { SExpressionASTFactory } from '../ast/SExpressionFactory';
-import { LiteralType, StatementType, TokenType } from './enums';
+import { ExpressionType, LiteralType, StatementType, TokenType } from './enums';
 
 /** the token extracted from the raw string stream */
 export type Token = {
@@ -25,7 +25,17 @@ export type BlockToken = {
   body: any;
 };
 
-export type StatementToken = ExpressionToken | BlockToken;
+export type BinaryExpressionToken = {
+  type: ExpressionType;
+  operator: string | number;
+  left: LiteralNode | ExpressionNode;
+  right: LiteralNode | ExpressionNode;
+};
+
+export type StatementToken =
+  | ExpressionToken
+  | BlockToken
+  | BinaryExpressionToken;
 
 /** tokenizer rules object type */
 export type SpecType = {
@@ -37,4 +47,9 @@ export type SpecType = {
 export type ASTNode = DefaultASTFactory | SExpressionASTFactory;
 export type LiteralNode = LiteralToken | (number | string);
 export type StatementNode = StatementToken | any[];
-export type ExpressionNode = ExpressionToken | any[];
+export type ExpressionNode =
+  | StatementNode
+  | LiteralNode
+  | ExpressionToken
+  | BinaryExpressionToken
+  | any[];

@@ -26,7 +26,7 @@ const parser = new Parser();
 // const ast = parser.parse(myProgram);
 
 const ast = parser.parse(`
- 42;
+ 7;
 `);
 
 console.log(JSON.stringify(ast, null, 2));

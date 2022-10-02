@@ -3,12 +3,17 @@ export enum LiteralType {
   NumericLiteral = 'NumericLiteral',
 }
 
+export enum ExpressionType {
+  BinaryExpression = 'BinaryExpression',
+}
+
 export enum TokenType {
   STRING = 'STRING',
   NUMBER = 'NUMBER',
   SEMI_COLON = ';',
   BLOCK_START = '{',
   BLOCK_END = '}',
+  ADD_OPERATOR = '+',
 }
 
 export enum ProgramType {
