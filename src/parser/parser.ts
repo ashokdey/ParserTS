@@ -80,7 +80,7 @@ export class Parser {
     return {
       type: StatementType.EmptyStatement,
       body: null,
-    }
+    };
   }
 
   BlockStatement() {

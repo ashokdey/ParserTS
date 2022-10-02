@@ -19,5 +19,5 @@ export enum ProgramType {
 export enum StatementType {
   ExpressionStatement = 'ExpressionStatement',
   BlockStatement = 'BlockStatement',
-  EmptyStatement = 'EmptyStatement'
+  EmptyStatement = 'EmptyStatement',
 }
