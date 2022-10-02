@@ -6,7 +6,6 @@ import {
 } from '../types/enums';
 import {
   ExpressionNode,
-  ExpressionToken,
   LiteralNode,
   StatementNode,
 } from '../types/types';
@@ -38,7 +37,7 @@ class DefaultASTFactory implements IAstFactory {
     };
   }
 
-  EmptyStatement() {
+  EmptyStatement(): StatementNode {
     return {
       type: StatementType.EmptyStatement,
       body: null,
@@ -79,7 +78,7 @@ class SExpressionASTFactory implements IAstFactory {
     return ['begin', body];
   }
 
-  EmptyStatement() {
+  EmptyStatement(): StatementNode {
     return [];
   }
 
