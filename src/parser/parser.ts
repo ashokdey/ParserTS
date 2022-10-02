@@ -1,6 +1,6 @@
 import { AST, ASTNode } from '../ast/factory';
 import { Tokenizer } from '../tokenizer/tokenizer';
-import { ASTType, TokenType, } from '../types/enums';
+import { ASTType, TokenType } from '../types/enums';
 import {
   ExpressionNode,
   LiteralNode,
@@ -70,14 +70,14 @@ export class Parser {
   /** empty statement can be a single ; */
   EmptyStatement(): StatementNode {
     this.eat(TokenType.SEMI_COLON);
-    return this.factory.EmptyStatement()
+    return this.factory.EmptyStatement();
   }
 
-  /** 
+  /**
    * block statements can be:
    * { 42; } or {} or { {} "hello" }
-   * 
-   * It can also be nested blocks 
+   *
+   * It can also be nested blocks
    * {
    *   {}
    * }

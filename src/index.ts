@@ -1,7 +1,7 @@
 import { Parser } from './parser/parser';
 
 const parser = new Parser();
-// const myProgram = `   
+// const myProgram = `
 // // number
 
 // /*

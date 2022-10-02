@@ -32,6 +32,6 @@ export type SpecType = {
 };
 
 /** for AST node type default and s-expression */
-export type LiteralNode = (LiteralToken | (number | string));
+export type LiteralNode = LiteralToken | (number | string);
 export type StatementNode = StatementToken | any[];
 export type ExpressionNode = ExpressionToken | any[];

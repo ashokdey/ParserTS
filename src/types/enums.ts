@@ -23,6 +23,6 @@ export enum StatementType {
 }
 
 export enum ASTType {
-  Default = "Default",
-  SExpression = "SExpression"
+  Default = 'Default',
+  SExpression = 'SExpression',
 }

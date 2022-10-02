@@ -1,5 +1,10 @@
-import { ASTType, LiteralType, ProgramType, StatementType } from "../types/enums";
-import { ExpressionToken, LiteralNode, LiteralToken } from "../types/types";
+import {
+  ASTType,
+  LiteralType,
+  ProgramType,
+  StatementType,
+} from '../types/enums';
+import { ExpressionToken, LiteralNode } from '../types/types';
 
 export type ASTNode = DefaultASTFactory | SExpressionASTFactory;
 
@@ -8,8 +13,10 @@ export class AST {
   private factory: ASTNode;
   constructor(mode: ASTType = ASTType.Default) {
     this.AST_MODE = mode;
-    this.factory = this.AST_MODE === ASTType.Default
-      ? new DefaultASTFactory() : new SExpressionASTFactory();
+    this.factory =
+      this.AST_MODE === ASTType.Default
+        ? new DefaultASTFactory()
+        : new SExpressionASTFactory();
   }
 
   getFactory(): ASTNode {
@@ -66,7 +73,9 @@ class SExpressionASTFactory {
     return ['begin', body];
   }
 
-  EmptyStatement() { return [] }
+  EmptyStatement() {
+    return [];
+  }
 
   BlockStatement(body) {
     return ['begin', body];
@@ -77,13 +86,10 @@ class SExpressionASTFactory {
   }
 
   NumericLiteral(value: number): LiteralNode {
-    return value
+    return value;
   }
 
   StringLiteral(value: string): LiteralNode {
     return `${value}`;
   }
 }
-
-
-
