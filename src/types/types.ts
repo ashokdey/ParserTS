@@ -1,4 +1,4 @@
-import { LiteralType, ProgramType, StatementType, TokenType } from './enums';
+import { LiteralType, StatementType, TokenType } from './enums';
 
 /** the token extracted from the raw string stream */
 export type Token = {
@@ -30,3 +30,8 @@ export type SpecType = {
   _regex: RegExp;
   type: TokenType;
 };
+
+/** for AST node type default and s-expression */
+export type LiteralNode = (LiteralToken | (number | string));
+export type StatementNode = StatementToken | any[];
+export type ExpressionNode = ExpressionToken | any[];

@@ -1,6 +1,6 @@
 import { TokenizationSpecs } from '../system/specs';
 import { TokenType } from '../types/enums';
-import { LiteralToken, Token } from '../types/types';
+import { Token } from '../types/types';
 
 /**
  * the tokenizer class is responsible for

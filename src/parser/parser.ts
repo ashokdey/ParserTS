@@ -1,14 +1,10 @@
+import { AST, ASTNode } from '../ast/factory';
 import { Tokenizer } from '../tokenizer/tokenizer';
+import { ASTType, TokenType, } from '../types/enums';
 import {
-  LiteralType,
-  ProgramType,
-  StatementType,
-  TokenType,
-} from '../types/enums';
-import {
-  BlockToken,
-  ExpressionToken,
-  LiteralToken,
+  ExpressionNode,
+  LiteralNode,
+  StatementNode,
   StatementToken,
   Token,
 } from '../types/types';
@@ -17,9 +13,11 @@ export class Parser {
   private _string = '';
   private tokenizer: Tokenizer;
   private lookahead: Token;
+  private factory: ASTNode;
 
   constructor() {
     this.tokenizer = new Tokenizer();
+    this.factory = new AST(ASTType.SExpression).getFactory();
   }
 
   /** parse() -> a given string into AST */
@@ -42,19 +40,14 @@ export class Parser {
 
   /** the main entry point for the parser  */
   Program() {
-    const node = this.StatementList();
-    return {
-      type: ProgramType.Program,
-      body: node,
-    };
+    return this.factory.Program(this.StatementList());
   }
 
-  StatementList(stopLookahead: TokenType = null): StatementToken[] {
+  StatementList(stopLookahead: TokenType = null): StatementToken[] | any[] {
     const statementList = [this.Statement()];
     while (this.lookahead !== null && this.lookahead.type !== stopLookahead) {
       statementList.push(this.Statement());
     }
-
     return statementList;
   }
 
@@ -63,8 +56,7 @@ export class Parser {
    * {} block statement
    * ; empty statement
    */
-
-  Statement(): StatementToken {
+  Statement(): StatementNode {
     switch (this.lookahead.type) {
       case TokenType.SEMI_COLON:
         return this.EmptyStatement();
@@ -75,15 +67,22 @@ export class Parser {
     }
   }
 
-  EmptyStatement() {
+  /** empty statement can be a single ; */
+  EmptyStatement(): StatementNode {
     this.eat(TokenType.SEMI_COLON);
-    return {
-      type: StatementType.EmptyStatement,
-      body: null,
-    };
+    return this.factory.EmptyStatement()
   }
 
-  BlockStatement() {
+  /** 
+   * block statements can be:
+   * { 42; } or {} or { {} "hello" }
+   * 
+   * It can also be nested blocks 
+   * {
+   *   {}
+   * }
+   */
+  BlockStatement(): StatementNode {
     this.eat(TokenType.BLOCK_START);
     /** when a block starts, keep getting lookahead until the block ends */
     const body =
@@ -91,26 +90,22 @@ export class Parser {
         ? this.StatementList(TokenType.BLOCK_END)
         : []; // return empty list
     this.eat(TokenType.BLOCK_END);
-    return {
-      type: StatementType.BlockStatement,
-      body,
-    };
+    return this.factory.BlockStatement(body);
   }
 
-  ExpressionStatement(): ExpressionToken {
+  /** anything that's ending with a ; like 42; or "hello"; */
+  ExpressionStatement(): ExpressionNode {
     const expression = this.Expression();
     this.eat(TokenType.SEMI_COLON);
-    return {
-      type: StatementType.ExpressionStatement,
-      expression,
-    };
+    return this.factory.ExpressionStatement(expression);
   }
 
-  Expression(): LiteralToken {
+  Expression(): LiteralNode {
     return this.Literal();
   }
 
-  Literal(): LiteralToken {
+  /** Literal returns either a numeric literal or a string literal */
+  Literal(): LiteralNode {
     switch (this.lookahead.type) {
       case TokenType.NUMBER:
         return this.NumericLiteral();
@@ -121,28 +116,23 @@ export class Parser {
   }
 
   /** this should get the numeric literal from the token */
-  NumericLiteral(): LiteralToken {
+  NumericLiteral(): LiteralNode {
     const token = this.eat(TokenType.NUMBER);
-    return {
-      type: LiteralType.NumericLiteral,
-      value: Number(token.value),
-    };
+    return this.factory.NumericLiteral(Number(token.value));
   }
 
-  /** this should get the string literal from the token */
-  StringLiteral(): LiteralToken {
+  /** this should get the string literal node from the string token */
+  StringLiteral(): LiteralNode {
     const token = this.eat(TokenType.STRING);
-    return {
-      type: LiteralType.StringLiteral,
-      value: String(token.value).slice(1, -1), // strip double quotes around the value
-    };
+    const value = String(token.value).slice(1, -1); // strip double quotes around the value
+    return this.factory.StringLiteral(value);
   }
 
   /**
    * eat is used to consume the current token and
    * advance the tokenizer to the next token
    * */
-  eat(tokenType: string): Token {
+  private eat(tokenType: string): Token {
     const token = this.lookahead;
 
     if (token === null) {

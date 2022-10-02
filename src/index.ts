@@ -1,28 +1,32 @@
 import { Parser } from './parser/parser';
 
 const parser = new Parser();
-const myProgram = `   
-// number
+// const myProgram = `   
+// // number
 
-/*
-Documentations
-*/
+// /*
+// Documentations
+// */
 
-42;
+// 42;
 
-{
-  45;
-  "new scope";
-}
+// {
+//   45;
+//   "new scope";
+// }
 
-{
-  // empty block
-  {
-    ;
-  }
-}
+// {
+//   // empty block
+//   {
+//     ;
+//   }
+// }
 
-"hello world";`;
-const ast = parser.parse(myProgram);
+// "hello world";`;
+// const ast = parser.parse(myProgram);
+
+const ast = parser.parse(`
+ 42;
+`);
 
 console.log(JSON.stringify(ast, null, 2));

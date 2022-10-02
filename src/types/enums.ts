@@ -21,3 +21,8 @@ export enum StatementType {
   BlockStatement = 'BlockStatement',
   EmptyStatement = 'EmptyStatement',
 }
+
+export enum ASTType {
+  Default = "Default",
+  SExpression = "SExpression"
+}
