@@ -17,7 +17,7 @@ export class Parser {
 
   constructor() {
     this.tokenizer = new Tokenizer();
-    this.factory = new AST(ASTType.SExpression).getFactory();
+    this.factory = new AST(ASTType.Default).getFactory();
   }
 
   /** parse() -> a given string into AST */

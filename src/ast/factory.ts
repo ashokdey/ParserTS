@@ -4,7 +4,8 @@ import {
   ProgramType,
   StatementType,
 } from '../types/enums';
-import { ExpressionToken, LiteralNode } from '../types/types';
+import { ExpressionNode, ExpressionToken, LiteralNode, StatementNode } from '../types/types';
+import { IAstFactory } from './interface';
 
 export type ASTNode = DefaultASTFactory | SExpressionASTFactory;
 
@@ -24,7 +25,7 @@ export class AST {
   }
 }
 
-class DefaultASTFactory {
+class DefaultASTFactory implements IAstFactory {
   Program(body) {
     return {
       type: ProgramType.Program,
@@ -39,14 +40,14 @@ class DefaultASTFactory {
     };
   }
 
-  BlockStatement(body) {
+  BlockStatement(body): StatementNode {
     return {
       type: StatementType.BlockStatement,
       body,
     };
   }
 
-  ExpressionStatement(body): ExpressionToken {
+  ExpressionStatement(body): ExpressionNode {
     return {
       type: StatementType.ExpressionStatement,
       expression: body,
@@ -68,7 +69,7 @@ class DefaultASTFactory {
   }
 }
 
-class SExpressionASTFactory {
+class SExpressionASTFactory implements IAstFactory {
   Program(body) {
     return ['begin', body];
   }
@@ -77,11 +78,11 @@ class SExpressionASTFactory {
     return [];
   }
 
-  BlockStatement(body) {
+  BlockStatement(body): StatementNode {
     return ['begin', body];
   }
 
-  ExpressionStatement(expression) {
+  ExpressionStatement(expression): ExpressionNode {
     return expression;
   }
 
