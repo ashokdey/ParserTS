@@ -5,7 +5,7 @@ import {
   StatementType,
 } from '../types/enums';
 import { ExpressionNode, LiteralNode, StatementNode } from '../types/types';
-import { IAstFactory } from './interface';
+import { IAstFactory } from './IFactory';
 
 export type ASTNode = DefaultASTFactory | SExpressionASTFactory;
 

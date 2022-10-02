@@ -1,4 +1,4 @@
-import { AST, ASTNode } from '../ast/factory';
+import { AST, ASTNode } from '../ast/Factory';
 import { Tokenizer } from '../tokenizer/tokenizer';
 import { ASTType, TokenType } from '../types/enums';
 import {
