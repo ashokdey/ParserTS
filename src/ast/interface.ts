@@ -1,4 +1,4 @@
-import { ExpressionNode, LiteralNode, StatementNode } from "../types/types";
+import { ExpressionNode, LiteralNode, StatementNode } from '../types/types';
 
 export interface IAstFactory {
   Program(body);

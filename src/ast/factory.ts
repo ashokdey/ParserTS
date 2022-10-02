@@ -4,7 +4,12 @@ import {
   ProgramType,
   StatementType,
 } from '../types/enums';
-import { ExpressionNode, ExpressionToken, LiteralNode, StatementNode } from '../types/types';
+import {
+  ExpressionNode,
+  ExpressionToken,
+  LiteralNode,
+  StatementNode,
+} from '../types/types';
 import { IAstFactory } from './interface';
 
 export type ASTNode = DefaultASTFactory | SExpressionASTFactory;
