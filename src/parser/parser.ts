@@ -58,12 +58,28 @@ export class Parser {
     return statementList;
   }
 
+  /** Statement can be:
+   * ; expression statement
+   * {} block statement
+   * ; empty statement
+   */
+
   Statement(): StatementToken {
     switch (this.lookahead.type) {
+      case TokenType.SEMI_COLON:
+        return this.EmptyStatement();
       case TokenType.BLOCK_START:
         return this.BlockStatement();
       default:
         return this.ExpressionStatement();
+    }
+  }
+
+  EmptyStatement() {
+    this.eat(TokenType.SEMI_COLON);
+    return {
+      type: StatementType.EmptyStatement,
+      body: null,
     }
   }
 

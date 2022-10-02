@@ -15,6 +15,13 @@ Documentations
   "new scope";
 }
 
+{
+  // empty block
+  {
+    ;
+  }
+}
+
 "hello world";`;
 const ast = parser.parse(myProgram);
 
