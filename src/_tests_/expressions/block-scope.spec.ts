@@ -55,7 +55,6 @@ describe('Testing block scoped statements', () => {
   });
 
   it('Should return nested block statements', () => {
-
     const parser = new Parser();
     const ast = parser.parse(`
     {
