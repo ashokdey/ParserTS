@@ -57,6 +57,7 @@ export class Parser {
    * ; expression statement
    * {} block statement
    * ; empty statement
+   * VariableStatement
    */
   Statement(): StatementNode | ExpressionNode {
     switch (this.lookahead.type) {
@@ -64,9 +65,61 @@ export class Parser {
         return this.EmptyStatement();
       case TokenType.BLOCK_START:
         return this.BlockStatement();
+      case TokenType.LET:
+        return this.VariableStatement();
       default:
         return this.ExpressionStatement();
     }
+  }
+
+  /**
+   * Variable statement should start with `let`
+   * followed by multiple variable declarations
+   * let VariableDeclarationList ;
+   */
+  VariableStatement(): StatementNode {
+    this.eat(TokenType.LET);
+    const declarations = this.VariableDeclarationList();
+    this.eat(TokenType.SEMI_COLON);
+    return this.factory.VariableStatement(declarations);
+  }
+
+  /**
+   * ; VariableDeclaration
+   * | VariableDeclarationList ',' VariableDeclaration
+   */
+  VariableDeclarationList() {
+    const declarations = [];
+    do {
+      declarations.push(this.VariableDeclaration());
+    } while (
+      this.lookahead.type === TokenType.COMMA &&
+      this.eat(TokenType.COMMA)
+    );
+    return declarations;
+  }
+
+  /**
+   * VariableDeclaration
+   *  : Identifier OptVariableInitializer
+   */
+  VariableDeclaration() {
+    const id = this.Identifier();
+    // OptVariableInitializer
+    const init =
+      this.lookahead.type !== TokenType.SEMI_COLON &&
+      this.lookahead.type !== TokenType.COMMA
+        ? this.VariableInitializer()
+        : null;
+    return this.factory.VariableDeclaration(id, init);
+  }
+
+  /**
+   * VariableInitializer starts with SIMPLE_ASSIGNMENT AssignmentExpression
+   */
+  VariableInitializer(): ExpressionNode {
+    this.eat(TokenType.SIMPLE_ASSIGNMENT);
+    return this.AssignmentExpression();
   }
 
   /** empty statement can be a single ; */
@@ -134,7 +187,7 @@ export class Parser {
     };
   }
 
-  checkValidAssignmentTarget(node: any): ExpressionNode {
+  checkValidAssignmentTarget(node: ExpressionNode): ExpressionNode {
     if (node.type === TokenType.IDENTIFIER) {
       return node;
     }

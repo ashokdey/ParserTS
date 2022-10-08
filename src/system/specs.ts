@@ -2,6 +2,7 @@ import { TokenType } from '../types/enums';
 import { SpecType } from '../types/types';
 
 export const TokenizationSpecs: SpecType[] = [
+  { _regex: /^\blet\b/, type: TokenType.LET },
   /** numbers  */
   { _regex: /^\d+/, type: TokenType.NUMBER },
 
@@ -31,6 +32,7 @@ export const TokenizationSpecs: SpecType[] = [
   /** process parenthesis  */
   { _regex: /^\(/, type: TokenType.PARENTHESIS_START },
   { _regex: /^\)/, type: TokenType.PARENTHESIS_END },
+  { _regex: /^,/, type: TokenType.COMMA },
 
   /** IDENTIFIERS */
   { _regex: /^\w+/, type: TokenType.IDENTIFIER },

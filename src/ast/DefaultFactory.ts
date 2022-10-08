@@ -1,4 +1,5 @@
 import {
+  DeclarationType,
   LiteralType,
   ProgramType,
   StatementType,
@@ -7,8 +8,10 @@ import {
 import {
   ExpressionNode,
   IdentifierNode,
+  IdentifierToken,
   LiteralNode,
   StatementNode,
+  VariableDeclaration,
 } from '../types/types';
 import { IAstFactory } from './IFactory';
 
@@ -31,6 +34,13 @@ export class DefaultASTFactory implements IAstFactory {
     return {
       type: StatementType.BlockStatement,
       body,
+    };
+  }
+
+  VariableStatement(declarations): StatementNode {
+    return {
+      type: StatementType.VariableStatement,
+      declarations,
     };
   }
 
@@ -59,6 +69,17 @@ export class DefaultASTFactory implements IAstFactory {
     return {
       type: TokenType.IDENTIFIER,
       name,
+    };
+  }
+
+  VariableDeclaration(
+    id: IdentifierToken,
+    init: ExpressionNode,
+  ): VariableDeclaration {
+    return {
+      type: DeclarationType.VariableDeclaration,
+      id,
+      init,
     };
   }
 }

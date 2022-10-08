@@ -8,11 +8,16 @@ export enum ExpressionType {
   AssignmentExpression = 'AssignmentExpression',
 }
 
+export enum DeclarationType {
+  VariableDeclaration = 'VariableDeclaration',
+}
+
 export enum TokenType {
   STRING = 'STRING',
   NUMBER = 'NUMBER',
   IDENTIFIER = 'IDENTIFIER',
   SEMI_COLON = ';',
+  COMMA = ',',
   BLOCK_START = '{',
   BLOCK_END = '}',
   PARENTHESIS_START = '(',
@@ -21,6 +26,7 @@ export enum TokenType {
   MULTIPLY_OPERATOR = '*',
   SIMPLE_ASSIGNMENT = '=',
   COMPLEX_ASSIGNMENT = '',
+  LET = 'LET',
 }
 
 export enum ProgramType {
@@ -32,6 +38,7 @@ export enum StatementType {
   ExpressionStatement = 'ExpressionStatement',
   BlockStatement = 'BlockStatement',
   EmptyStatement = 'EmptyStatement',
+  VariableStatement = 'VariableStatement',
 }
 
 export enum ASTType {
