@@ -200,7 +200,7 @@ export class Parser {
    * ;
    */
   AssignmentExpression(): ExpressionNode {
-    const left = this.AdditiveExpression();
+    const left = this.RelationalExpression();
     if (!this.isAssignmentOperator(this.lookahead.type)) {
       return left;
     }
@@ -236,6 +236,32 @@ export class Parser {
       return this.eat(TokenType.SIMPLE_ASSIGNMENT);
     }
     return this.eat(TokenType.COMPLEX_ASSIGNMENT);
+  }
+
+  /**
+   * RELATIONAL_OPERATOR: >, >=, <, <=
+   * x > y
+   * x >= y
+   * x < y
+   * x <= y
+   *
+   * RelationalExpression
+   *  : AdditiveExpression
+   *  | AdditiveExpression RELATIONAL_OPERATOR RelationalExpression
+   */
+  RelationalExpression(): ExpressionNode {
+    let left = this.AdditiveExpression();
+    while (this.lookahead.type === TokenType.RELATIONAL_OPERATOR) {
+      const operator = this.eat(TokenType.RELATIONAL_OPERATOR).value;
+      const right = this.AdditiveExpression();
+      left = {
+        type: ExpressionType.BinaryExpression,
+        operator,
+        left,
+        right,
+      };
+    }
+    return left;
   }
 
   /**

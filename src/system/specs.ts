@@ -46,4 +46,5 @@ export const TokenizationSpecs: SpecType[] = [
   /** Mathematical operators like +. -, *, /  */
   { _regex: /^[+\-]/, type: TokenType.ADD_OPERATOR },
   { _regex: /^[*\/]/, type: TokenType.MULTIPLY_OPERATOR },
+  { _regex: /^[><]=?/, type: TokenType.RELATIONAL_OPERATOR },
 ];

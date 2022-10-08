@@ -6,6 +6,7 @@ export enum LiteralType {
 export enum ExpressionType {
   BinaryExpression = 'BinaryExpression',
   AssignmentExpression = 'AssignmentExpression',
+  AdditiveExpression = 'AdditiveExpression',
 }
 
 export enum DeclarationType {
@@ -24,11 +25,17 @@ export enum TokenType {
   CLOSE_PARENTHESIS = ')',
   ADD_OPERATOR = '+',
   MULTIPLY_OPERATOR = '*',
+  RELATIONAL_OPERATOR = '',
   SIMPLE_ASSIGNMENT = '=',
   COMPLEX_ASSIGNMENT = '',
   LET = 'let',
   IF = 'if',
   ELSE = 'else',
+  GREATER_THAN = '>',
+  LESS_THAN = '<',
+  EQUALS = '==',
+  GREATER_THAN_EQUALS = '>=',
+  LESS_THAN_EQUALS = '<=',
 }
 
 export enum ProgramType {
