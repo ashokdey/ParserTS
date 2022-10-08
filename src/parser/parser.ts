@@ -8,6 +8,7 @@ import {
   LiteralNode,
   StatementNode,
   Token,
+  VariableDeclaration,
 } from '../types/types';
 
 export class Parser {
@@ -88,7 +89,7 @@ export class Parser {
    * ; VariableDeclaration
    * | VariableDeclarationList ',' VariableDeclaration
    */
-  VariableDeclarationList() {
+  VariableDeclarationList(): VariableDeclaration[] {
     const declarations = [];
     do {
       declarations.push(this.VariableDeclaration());
@@ -103,7 +104,7 @@ export class Parser {
    * VariableDeclaration
    *  : Identifier OptVariableInitializer
    */
-  VariableDeclaration() {
+  VariableDeclaration(): VariableDeclaration {
     const id = this.Identifier();
     // OptVariableInitializer
     const init =

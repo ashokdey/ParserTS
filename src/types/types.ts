@@ -27,17 +27,17 @@ export type IdentifierToken = {
 /** the token identified as an expression */
 export type ExpressionToken = {
   type: StatementType;
-  expression: any;
+  expression: ExpressionNode;
 };
 
 export type BlockToken = {
   type: StatementType;
-  body: any;
+  body: StatementNode;
 };
 
 export type VariableToken = {
   type: StatementType;
-  declarations: any;
+  declarations: VariableDeclaration[];
 };
 
 export type VariableDeclaration = {
