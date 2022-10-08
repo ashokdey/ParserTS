@@ -14,6 +14,7 @@ export enum TokenType {
   BLOCK_START = '{',
   BLOCK_END = '}',
   ADD_OPERATOR = '+',
+  MULTIPLY_OPERATOR = '*',
 }
 
 export enum ProgramType {

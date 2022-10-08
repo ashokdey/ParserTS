@@ -34,4 +34,6 @@ export const TokenizationSpecs: SpecType[] = [
    */
   //eslint-disable-next-line
   { _regex: /^[+\-]/, type: TokenType.ADD_OPERATOR },
+  //eslint-disable-next-line
+  { _regex: /^[*\/]/, type: TokenType.MULTIPLY_OPERATOR },
 ];

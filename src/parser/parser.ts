@@ -105,13 +105,18 @@ export class Parser {
     return this.AdditiveExpression();
   }
 
+  /**
+   * AdditiveExpression can be:
+   * MultiplicativeExpression
+   * | AdditiveExpression ADD_OPERATOR MultiplicativeExpression -> MultiplicativeExpression ADD_OPERATOR
+   *
+   */
   AdditiveExpression(): ExpressionNode {
-    let left: ExpressionNode = this.Literal();
-
+    let left = this.MultiplicativeExpression();
     while (this.lookahead.type === TokenType.ADD_OPERATOR) {
-      const operator = this.eat(TokenType.ADD_OPERATOR).value; // remember to take the value only not the token
-      const right = this.Literal();
-
+      // operator are +, - | also remember to take the value only not the token
+      const operator = this.eat(TokenType.ADD_OPERATOR).value;
+      const right = this.MultiplicativeExpression();
       left = {
         type: ExpressionType.BinaryExpression,
         operator,
@@ -120,6 +125,31 @@ export class Parser {
       };
     }
     return left;
+  }
+
+  /**
+   * MultiplicativeExpression can be as:
+   * PrimaryExpression
+   * | MultiplicativeExpression MULTIPLY_OPERATOR PrimaryExpression -> PrimaryExpression MULTIPLY_OPERATOR
+   */
+  MultiplicativeExpression(): ExpressionNode {
+    let left = this.PrimaryExpression();
+    while (this.lookahead.type === TokenType.MULTIPLY_OPERATOR) {
+      // operator are *, / | also remember to take the value only not the token
+      const operator = this.eat(TokenType.MULTIPLY_OPERATOR).value;
+      const right = this.PrimaryExpression();
+      left = {
+        type: ExpressionType.BinaryExpression,
+        operator,
+        left,
+        right,
+      };
+    }
+    return left;
+  }
+
+  PrimaryExpression(): ExpressionNode {
+    return this.Literal();
   }
 
   /** Literal returns either a numeric literal or a string literal */
