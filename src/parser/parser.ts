@@ -133,7 +133,7 @@ export class Parser {
     // OptVariableInitializer
     const init =
       this.lookahead.type !== TokenType.SEMI_COLON &&
-        this.lookahead.type !== TokenType.COMMA
+      this.lookahead.type !== TokenType.COMMA
         ? this.VariableInitializer()
         : null;
     return this.factory.VariableDeclaration(id, init);
@@ -242,7 +242,7 @@ export class Parser {
    * EQUALITY_OPERATOR: ==, !=
    * x == y
    * x != y
-   * 
+   *
    * EqualityExpression can be:
    * a RelationalExpression EQUALITY_OPERATOR EqualityExpression
    * or RelationalExpression
@@ -269,11 +269,14 @@ export class Parser {
   RelationalExpression(): ExpressionNode {
     return this.DynamicBinaryExpression(
       ExpressionType.AdditiveExpression,
-      TokenType.RELATIONAL_OPERATOR
+      TokenType.RELATIONAL_OPERATOR,
     );
   }
 
-  DynamicBinaryExpression(expBuilder: string, tType: TokenType): ExpressionNode {
+  DynamicBinaryExpression(
+    expBuilder: string,
+    tType: TokenType,
+  ): ExpressionNode {
     let left = this[expBuilder]();
     while (this.lookahead.type === tType) {
       const operator = this.eat(tType).value;
@@ -364,8 +367,8 @@ export class Parser {
     return expression;
   }
 
-  /** 
-   * Literal can return 
+  /**
+   * Literal can return
    * Numeric Literal
    * String Literal
    * Boolean Literal
