@@ -59,11 +59,14 @@ export class Parser {
    * {} block statement
    * ; empty statement
    * VariableStatement
+   * IfStatement
    */
   Statement(): StatementNode | ExpressionNode {
     switch (this.lookahead.type) {
       case TokenType.SEMI_COLON:
         return this.EmptyStatement();
+      case TokenType.IF:
+        return this.IfStatement();
       case TokenType.BLOCK_START:
         return this.BlockStatement();
       case TokenType.LET:
@@ -71,6 +74,27 @@ export class Parser {
       default:
         return this.ExpressionStatement();
     }
+  }
+
+  /**
+   * IfStatement
+   * : if '(' Expression ')' Statement
+   * | if '(' Expression ')' Statement 'else' Statement
+   *
+   */
+  IfStatement(): StatementNode {
+    this.eat(TokenType.IF);
+    this.eat(TokenType.OPEN_PARENTHESIS);
+    const test = this.Expression();
+    this.eat(TokenType.CLOSE_PARENTHESIS);
+
+    const consequent = this.Statement();
+    const alternate =
+      this.lookahead !== null && this.lookahead.type === TokenType.ELSE
+        ? this.eat(TokenType.ELSE) && this.Statement()
+        : null;
+
+    return this.factory.IfStatement(test, consequent, alternate);
   }
 
   /**
@@ -268,7 +292,7 @@ export class Parser {
       case TokenType.NUMBER:
       case TokenType.STRING:
         return this.Literal();
-      case TokenType.PARENTHESIS_START:
+      case TokenType.OPEN_PARENTHESIS:
         return this.ParenthesizedExpression();
       default:
         return this.LeftHandExpression();
@@ -280,9 +304,9 @@ export class Parser {
    * '( expression )'
    */
   ParenthesizedExpression(): ExpressionNode {
-    this.eat(TokenType.PARENTHESIS_START);
+    this.eat(TokenType.OPEN_PARENTHESIS);
     const expression = this.Expression();
-    this.eat(TokenType.PARENTHESIS_END);
+    this.eat(TokenType.CLOSE_PARENTHESIS);
     return expression;
   }
 

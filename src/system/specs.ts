@@ -2,7 +2,11 @@ import { TokenType } from '../types/enums';
 import { SpecType } from '../types/types';
 
 export const TokenizationSpecs: SpecType[] = [
+  /** Keywords */
   { _regex: /^\blet\b/, type: TokenType.LET },
+  { _regex: /^\bif\b/, type: TokenType.IF },
+  { _regex: /^\belse\b/, type: TokenType.ELSE },
+
   /** numbers  */
   { _regex: /^\d+/, type: TokenType.NUMBER },
 
@@ -13,25 +17,23 @@ export const TokenizationSpecs: SpecType[] = [
   /** white spaces */
   { _regex: /^\s+/, type: null },
 
-  /**
-   * Comments
-   */
+  /** Comments */
   /** skip single line comments  */
   { _regex: /^\/\/.*/, type: null },
   /** skip multi line comments  */
   { _regex: /^\/\*[\s\S]*?\*\//, type: null },
 
-  /**
-   * Symbols and delimiters
-   */
+  /** Symbols and delimiters */
   /** processing a semicolon as a statement */
   { _regex: /^;/, type: TokenType.SEMI_COLON },
+
   /** process block scope  */
   { _regex: /^\{/, type: TokenType.BLOCK_START },
   { _regex: /^\}/, type: TokenType.BLOCK_END },
+
   /** process parenthesis  */
-  { _regex: /^\(/, type: TokenType.PARENTHESIS_START },
-  { _regex: /^\)/, type: TokenType.PARENTHESIS_END },
+  { _regex: /^\(/, type: TokenType.OPEN_PARENTHESIS },
+  { _regex: /^\)/, type: TokenType.CLOSE_PARENTHESIS },
   { _regex: /^,/, type: TokenType.COMMA },
 
   /** IDENTIFIERS */
@@ -41,11 +43,7 @@ export const TokenizationSpecs: SpecType[] = [
   { _regex: /^=/, type: TokenType.SIMPLE_ASSIGNMENT },
   { _regex: /^[\*\/\+\-]=/, type: TokenType.COMPLEX_ASSIGNMENT },
 
-  /**
-   * Mathematical operators like +. -, *, /
-   */
-  //eslint-disable-next-line
+  /** Mathematical operators like +. -, *, /  */
   { _regex: /^[+\-]/, type: TokenType.ADD_OPERATOR },
-  //eslint-disable-next-line
   { _regex: /^[*\/]/, type: TokenType.MULTIPLY_OPERATOR },
 ];

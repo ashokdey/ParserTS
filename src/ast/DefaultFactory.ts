@@ -11,6 +11,7 @@ import {
   IdentifierToken,
   LiteralNode,
   StatementNode,
+  StatementToken,
   VariableDeclaration,
 } from '../types/types';
 import { IAstFactory } from './IFactory';
@@ -80,6 +81,19 @@ export class DefaultASTFactory implements IAstFactory {
       type: DeclarationType.VariableDeclaration,
       id,
       init,
+    };
+  }
+
+  IfStatement(
+    test: ExpressionNode,
+    consequent: ExpressionNode,
+    alternate: ExpressionNode,
+  ): StatementToken {
+    return {
+      type: StatementType.IfStatement,
+      test,
+      consequent,
+      alternate,
     };
   }
 }

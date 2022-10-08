@@ -35,6 +35,13 @@ export type BlockToken = {
   body: StatementNode;
 };
 
+export type IfToken = {
+  type: StatementType.IfStatement;
+  test: ExpressionNode;
+  consequent: ExpressionNode;
+  alternate: ExpressionNode;
+};
+
 export type VariableToken = {
   type: StatementType;
   declarations: VariableDeclaration[];
@@ -57,7 +64,8 @@ export type StatementToken =
   | ExpressionToken
   | BlockToken
   | BinaryExpressionToken
-  | VariableToken;
+  | VariableToken
+  | IfToken;
 
 /** tokenizer rules object type */
 export type SpecType = {

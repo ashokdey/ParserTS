@@ -20,13 +20,15 @@ export enum TokenType {
   COMMA = ',',
   BLOCK_START = '{',
   BLOCK_END = '}',
-  PARENTHESIS_START = '(',
-  PARENTHESIS_END = ')',
+  OPEN_PARENTHESIS = '(',
+  CLOSE_PARENTHESIS = ')',
   ADD_OPERATOR = '+',
   MULTIPLY_OPERATOR = '*',
   SIMPLE_ASSIGNMENT = '=',
   COMPLEX_ASSIGNMENT = '',
-  LET = 'LET',
+  LET = 'let',
+  IF = 'if',
+  ELSE = 'else',
 }
 
 export enum ProgramType {
@@ -39,6 +41,7 @@ export enum StatementType {
   BlockStatement = 'BlockStatement',
   EmptyStatement = 'EmptyStatement',
   VariableStatement = 'VariableStatement',
+  IfStatement = 'IfStatement',
 }
 
 export enum ASTType {
