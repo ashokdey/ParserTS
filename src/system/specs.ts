@@ -26,8 +26,11 @@ export const TokenizationSpecs: SpecType[] = [
   /** processing a semicolon as a statement */
   { _regex: /^;/, type: TokenType.SEMI_COLON },
   /** process block scope  */
-  { _regex: /^{/, type: TokenType.BLOCK_START },
-  { _regex: /^}/, type: TokenType.BLOCK_END },
+  { _regex: /^\{/, type: TokenType.BLOCK_START },
+  { _regex: /^\}/, type: TokenType.BLOCK_END },
+  /** process parenthesis  */
+  { _regex: /^\(/, type: TokenType.PARENTHESIS_START },
+  { _regex: /^\)/, type: TokenType.PARENTHESIS_END },
 
   /**
    * Mathematical operators like +. -, *, /

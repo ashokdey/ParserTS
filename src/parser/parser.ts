@@ -109,7 +109,6 @@ export class Parser {
    * AdditiveExpression can be:
    * MultiplicativeExpression
    * | AdditiveExpression ADD_OPERATOR MultiplicativeExpression -> MultiplicativeExpression ADD_OPERATOR
-   *
    */
   AdditiveExpression(): ExpressionNode {
     let left = this.MultiplicativeExpression();
@@ -148,8 +147,26 @@ export class Parser {
     return left;
   }
 
+  /**
+   * PrimaryExpression can be:
+   * : Literal
+   * | ParenthesizedExpression
+   * ;
+   */
   PrimaryExpression(): ExpressionNode {
-    return this.Literal();
+    switch (this.lookahead.type) {
+      case TokenType.PARENTHESIS_START:
+        return this.ParenthesizedExpression();
+      default:
+        return this.Literal();
+    }
+  }
+
+  ParenthesizedExpression(): ExpressionNode {
+    this.eat(TokenType.PARENTHESIS_START);
+    const expression = this.Expression();
+    this.eat(TokenType.PARENTHESIS_END);
+    return expression;
   }
 
   /** Literal returns either a numeric literal or a string literal */

@@ -13,6 +13,8 @@ export enum TokenType {
   SEMI_COLON = ';',
   BLOCK_START = '{',
   BLOCK_END = '}',
+  PARENTHESIS_START = '(',
+  PARENTHESIS_END = ')',
   ADD_OPERATOR = '+',
   MULTIPLY_OPERATOR = '*',
 }
