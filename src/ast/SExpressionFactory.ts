@@ -1,4 +1,9 @@
-import { ExpressionNode, LiteralNode, StatementNode } from '../types/types';
+import {
+  ExpressionNode,
+  IdentifierNode,
+  LiteralNode,
+  StatementNode,
+} from '../types/types';
 import { IAstFactory } from './IFactory';
 
 export class SExpressionASTFactory implements IAstFactory {
@@ -24,5 +29,9 @@ export class SExpressionASTFactory implements IAstFactory {
 
   StringLiteral(value: string): LiteralNode {
     return `${value}`;
+  }
+
+  Identifier(name: string): IdentifierNode {
+    return name;
   }
 }

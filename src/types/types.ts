@@ -14,6 +14,11 @@ export type LiteralToken = {
   value: number | string;
 };
 
+export type IdentifierToken = {
+  type: TokenType.IDENTIFIER;
+  name: string;
+};
+
 /** the token identified as an expression */
 export type ExpressionToken = {
   type: StatementType;
@@ -46,10 +51,12 @@ export type SpecType = {
 /** for AST node type default and s-expression */
 export type ASTNode = DefaultASTFactory | SExpressionASTFactory;
 export type LiteralNode = LiteralToken | (number | string);
+export type IdentifierNode = IdentifierToken | string;
 export type StatementNode = StatementToken | any[];
 export type ExpressionNode =
   | StatementNode
   | LiteralNode
+  | IdentifierNode
   | ExpressionToken
   | BinaryExpressionToken
   | any[];

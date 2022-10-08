@@ -5,11 +5,13 @@ export enum LiteralType {
 
 export enum ExpressionType {
   BinaryExpression = 'BinaryExpression',
+  AssignmentExpression = 'AssignmentExpression',
 }
 
 export enum TokenType {
   STRING = 'STRING',
   NUMBER = 'NUMBER',
+  IDENTIFIER = 'IDENTIFIER',
   SEMI_COLON = ';',
   BLOCK_START = '{',
   BLOCK_END = '}',
@@ -17,6 +19,8 @@ export enum TokenType {
   PARENTHESIS_END = ')',
   ADD_OPERATOR = '+',
   MULTIPLY_OPERATOR = '*',
+  SIMPLE_ASSIGNMENT = '=',
+  COMPLEX_ASSIGNMENT = '',
 }
 
 export enum ProgramType {

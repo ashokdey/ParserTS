@@ -32,6 +32,13 @@ export const TokenizationSpecs: SpecType[] = [
   { _regex: /^\(/, type: TokenType.PARENTHESIS_START },
   { _regex: /^\)/, type: TokenType.PARENTHESIS_END },
 
+  /** IDENTIFIERS */
+  { _regex: /^\w+/, type: TokenType.IDENTIFIER },
+
+  /** ASSIGNMENT OPERATOR */
+  { _regex: /^=/, type: TokenType.SIMPLE_ASSIGNMENT },
+  { _regex: /^[\*\/\+\-]=/, type: TokenType.COMPLEX_ASSIGNMENT },
+
   /**
    * Mathematical operators like +. -, *, /
    */

@@ -1,5 +1,15 @@
-import { LiteralType, ProgramType, StatementType } from '../types/enums';
-import { ExpressionNode, LiteralNode, StatementNode } from '../types/types';
+import {
+  LiteralType,
+  ProgramType,
+  StatementType,
+  TokenType,
+} from '../types/enums';
+import {
+  ExpressionNode,
+  IdentifierNode,
+  LiteralNode,
+  StatementNode,
+} from '../types/types';
 import { IAstFactory } from './IFactory';
 
 export class DefaultASTFactory implements IAstFactory {
@@ -42,6 +52,13 @@ export class DefaultASTFactory implements IAstFactory {
     return {
       type: LiteralType.StringLiteral,
       value,
+    };
+  }
+
+  Identifier(name: string): IdentifierNode {
+    return {
+      type: TokenType.IDENTIFIER,
+      name,
     };
   }
 }

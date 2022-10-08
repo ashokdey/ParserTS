@@ -4,8 +4,10 @@ import { ASTType, ExpressionType, TokenType } from '../types/enums';
 import {
   ASTNode,
   ExpressionNode,
+  IdentifierNode,
   LiteralNode,
   StatementNode,
+  IdentifierToken,
   Token,
 } from '../types/types';
 
@@ -102,7 +104,61 @@ export class Parser {
   }
 
   Expression(): ExpressionNode {
-    return this.AdditiveExpression();
+    return this.AssignmentExpression();
+  }
+
+  LeftHandExpression() {
+    return this.Identifier();
+  }
+
+  Identifier(): IdentifierNode {
+    const name = this.eat(TokenType.IDENTIFIER).value;
+    return typeof name === 'string' ? this.factory.Identifier(name) : null;
+  }
+
+  /**
+   * AssignmentExpression
+   * : AdditiveExpression
+   * | LeftHandSideExpression AssignmentOperator AssignmentExpression
+   * ;
+   */
+  AssignmentExpression(): ExpressionNode {
+    const left = this.AdditiveExpression();
+    if (!this.isAssignmentOperator(this.lookahead.type)) {
+      return left;
+    }
+    return {
+      type: ExpressionType.AssignmentExpression,
+      operator: this.AssignmentOperator().value,
+      left: this.checkValidAssignmentTarget(left),
+      right: this.AssignmentExpression(),
+    };
+  }
+
+  checkValidAssignmentTarget(node: any): ExpressionNode {
+    if (node.type === TokenType.IDENTIFIER) {
+      return node;
+    }
+    throw new SyntaxError(`Invalid left-hand side in assignment expression`);
+  }
+
+  isAssignmentOperator(t: TokenType): boolean {
+    return (
+      t === TokenType.SIMPLE_ASSIGNMENT || t === TokenType.COMPLEX_ASSIGNMENT
+    );
+  }
+
+  /**
+   * AssignmentOperator can be
+   * : SIMPLE_ASSIGNMENT
+   * | COMPLEX_ASSIGNMENT
+   * ;
+   */
+  AssignmentOperator(): Token {
+    if (this.lookahead.type === TokenType.SIMPLE_ASSIGNMENT) {
+      return this.eat(TokenType.SIMPLE_ASSIGNMENT);
+    }
+    return this.eat(TokenType.COMPLEX_ASSIGNMENT);
   }
 
   /**
@@ -151,17 +207,25 @@ export class Parser {
    * PrimaryExpression can be:
    * : Literal
    * | ParenthesizedExpression
+   * | LeftHandExpression
    * ;
    */
   PrimaryExpression(): ExpressionNode {
     switch (this.lookahead.type) {
+      case TokenType.NUMBER:
+      case TokenType.STRING:
+        return this.Literal();
       case TokenType.PARENTHESIS_START:
         return this.ParenthesizedExpression();
       default:
-        return this.Literal();
+        return this.LeftHandExpression();
     }
   }
 
+  /**
+   * ParenthesizedExpression can be:
+   * '( expression )'
+   */
   ParenthesizedExpression(): ExpressionNode {
     this.eat(TokenType.PARENTHESIS_START);
     const expression = this.Expression();

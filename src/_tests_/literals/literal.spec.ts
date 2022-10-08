@@ -19,6 +19,7 @@ describe('Testing the Literals', () => {
       }`);
       expect(ast).toMatchObject(res);
     });
+
     it('Should return a string literal', () => {
       const parser = new Parser();
       const ast = parser.parse(`"hello";`);
