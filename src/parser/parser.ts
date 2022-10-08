@@ -7,7 +7,6 @@ import {
   IdentifierNode,
   LiteralNode,
   StatementNode,
-  IdentifierToken,
   Token,
 } from '../types/types';
 

@@ -2,7 +2,7 @@ import { Parser } from './parser/parser';
 
 const parser = new Parser();
 const ast = parser.parse(`
-  x = y = 42;
+  x = 10 + y;
 `);
 
 console.log(JSON.stringify(ast, null, 2));
