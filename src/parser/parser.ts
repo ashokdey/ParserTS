@@ -133,7 +133,7 @@ export class Parser {
     // OptVariableInitializer
     const init =
       this.lookahead.type !== TokenType.SEMI_COLON &&
-      this.lookahead.type !== TokenType.COMMA
+        this.lookahead.type !== TokenType.COMMA
         ? this.VariableInitializer()
         : null;
     return this.factory.VariableDeclaration(id, init);
@@ -195,12 +195,12 @@ export class Parser {
 
   /**
    * AssignmentExpression
-   * : AdditiveExpression
+   * : EqualityExpression
    * | LeftHandSideExpression AssignmentOperator AssignmentExpression
    * ;
    */
   AssignmentExpression(): ExpressionNode {
-    const left = this.RelationalExpression();
+    const left = this.EqualityExpression();
     if (!this.isAssignmentOperator(this.lookahead.type)) {
       return left;
     }
@@ -239,6 +239,23 @@ export class Parser {
   }
 
   /**
+   * EQUALITY_OPERATOR: ==, !=
+   * x == y
+   * x != y
+   * 
+   * EqualityExpression can be:
+   * a RelationalExpression EQUALITY_OPERATOR EqualityExpression
+   * or RelationalExpression
+   * ;
+   */
+  EqualityExpression(): ExpressionNode {
+    return this.DynamicBinaryExpression(
+      ExpressionType.RelationalExpression,
+      TokenType.EQUALITY_OPERATOR,
+    );
+  }
+
+  /**
    * RELATIONAL_OPERATOR: >, >=, <, <=
    * x > y
    * x >= y
@@ -250,10 +267,17 @@ export class Parser {
    *  | AdditiveExpression RELATIONAL_OPERATOR RelationalExpression
    */
   RelationalExpression(): ExpressionNode {
-    let left = this.AdditiveExpression();
-    while (this.lookahead.type === TokenType.RELATIONAL_OPERATOR) {
-      const operator = this.eat(TokenType.RELATIONAL_OPERATOR).value;
-      const right = this.AdditiveExpression();
+    return this.DynamicBinaryExpression(
+      ExpressionType.AdditiveExpression,
+      TokenType.RELATIONAL_OPERATOR
+    );
+  }
+
+  DynamicBinaryExpression(expBuilder: string, tType: TokenType): ExpressionNode {
+    let left = this[expBuilder]();
+    while (this.lookahead.type === tType) {
+      const operator = this.eat(tType).value;
+      const right = this[expBuilder]();
       left = {
         type: ExpressionType.BinaryExpression,
         operator,
@@ -315,8 +339,12 @@ export class Parser {
    */
   PrimaryExpression(): ExpressionNode {
     switch (this.lookahead.type) {
+      // Check if isLiteral
       case TokenType.NUMBER:
       case TokenType.STRING:
+      case TokenType.TRUE:
+      case TokenType.FALSE:
+      case TokenType.NULL:
         return this.Literal();
       case TokenType.OPEN_PARENTHESIS:
         return this.ParenthesizedExpression();
@@ -336,15 +364,37 @@ export class Parser {
     return expression;
   }
 
-  /** Literal returns either a numeric literal or a string literal */
+  /** 
+   * Literal can return 
+   * Numeric Literal
+   * String Literal
+   * Boolean Literal
+   * Null Literal
+   *  */
   Literal(): LiteralNode {
     switch (this.lookahead.type) {
       case TokenType.NUMBER:
         return this.NumericLiteral();
       case TokenType.STRING:
         return this.StringLiteral();
+      case TokenType.TRUE:
+        return this.BooleanLiteral(true);
+      case TokenType.FALSE:
+        return this.BooleanLiteral(false);
+      case TokenType.NULL:
+        return this.NullLiteral(null);
     }
     throw new SyntaxError(`Literal: Unexpected literal found`);
+  }
+
+  BooleanLiteral(value: boolean) {
+    this.eat(value ? TokenType.TRUE : TokenType.FALSE);
+    return this.factory.BooleanLiteral(value);
+  }
+
+  NullLiteral(n: null) {
+    this.eat(TokenType.NULL);
+    return this.factory.NullLiteral(n);
   }
 
   /** this should get the numeric literal from the token */

@@ -66,6 +66,20 @@ export class DefaultASTFactory implements IAstFactory {
     };
   }
 
+  BooleanLiteral(value): LiteralNode {
+    return {
+      type: LiteralType.BooleanLiteral,
+      value,
+    };
+  }
+
+  NullLiteral(value): LiteralNode {
+    return {
+      type: LiteralType.NullLiteral,
+      value,
+    };
+  }
+
   Identifier(name: string): IdentifierNode {
     return {
       type: TokenType.IDENTIFIER,

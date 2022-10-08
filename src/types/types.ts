@@ -16,7 +16,7 @@ export type Token = {
 /** the extracted token identified as literal, either Numeric or String literal */
 export type LiteralToken = {
   type: LiteralType;
-  value: number | string;
+  value: number | string | boolean | null;
 };
 
 export type IdentifierToken = {

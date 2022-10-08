@@ -1,12 +1,15 @@
 export enum LiteralType {
   StringLiteral = 'StringLiteral',
   NumericLiteral = 'NumericLiteral',
+  BooleanLiteral = 'BooleanLiteral',
+  NullLiteral = 'NullLiteral',
 }
 
 export enum ExpressionType {
   BinaryExpression = 'BinaryExpression',
   AssignmentExpression = 'AssignmentExpression',
   AdditiveExpression = 'AdditiveExpression',
+  RelationalExpression = 'RelationalExpression',
 }
 
 export enum DeclarationType {
@@ -25,17 +28,16 @@ export enum TokenType {
   CLOSE_PARENTHESIS = ')',
   ADD_OPERATOR = '+',
   MULTIPLY_OPERATOR = '*',
-  RELATIONAL_OPERATOR = '',
+  RELATIONAL_OPERATOR = 'RELATIONAL_OPERATOR',
+  EQUALITY_OPERATOR = 'EQUALITY_OPERATOR',
   SIMPLE_ASSIGNMENT = '=',
   COMPLEX_ASSIGNMENT = '',
   LET = 'let',
   IF = 'if',
   ELSE = 'else',
-  GREATER_THAN = '>',
-  LESS_THAN = '<',
-  EQUALS = '==',
-  GREATER_THAN_EQUALS = '>=',
-  LESS_THAN_EQUALS = '<=',
+  TRUE = 'true',
+  FALSE = 'false',
+  NULL = 'null',
 }
 
 export enum ProgramType {
