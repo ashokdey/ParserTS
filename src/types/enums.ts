@@ -13,6 +13,7 @@ export enum ExpressionType {
   RelationalExpression = 'RelationalExpression',
   LogicalExpression = 'LogicalExpression',
   LogicalANDExpression = 'LogicalANDExpression',
+  UnaryExpression = 'UnaryExpression'
 }
 
 export enum DeclarationType {
@@ -43,6 +44,7 @@ export enum TokenType {
   NULL = 'null',
   LOGICAL_AND = '&&',
   LOGICAL_OR = '||',
+  LOGICAL_NOT = '!'
 }
 
 export enum ProgramType {

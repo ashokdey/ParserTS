@@ -133,7 +133,7 @@ export class Parser {
     // OptVariableInitializer
     const init =
       this.lookahead.type !== TokenType.SEMI_COLON &&
-      this.lookahead.type !== TokenType.COMMA
+        this.lookahead.type !== TokenType.COMMA
         ? this.VariableInitializer()
         : null;
     return this.factory.VariableDeclaration(id, init);
@@ -185,7 +185,7 @@ export class Parser {
   }
 
   LeftHandExpression() {
-    return this.Identifier();
+    return this.PrimaryExpression();
   }
 
   Identifier(): IdentifierNode {
@@ -358,15 +358,15 @@ export class Parser {
 
   /**
    * MultiplicativeExpression can be as:
-   * PrimaryExpression
+   * UnaryExpression
    * | MultiplicativeExpression MULTIPLY_OPERATOR PrimaryExpression -> PrimaryExpression MULTIPLY_OPERATOR
    */
   MultiplicativeExpression(): ExpressionNode {
-    let left = this.PrimaryExpression();
+    let left = this.UnaryExpression();
     while (this.lookahead.type === TokenType.MULTIPLY_OPERATOR) {
       // operator are *, / | also remember to take the value only not the token
       const operator = this.eat(TokenType.MULTIPLY_OPERATOR).value;
-      const right = this.PrimaryExpression();
+      const right = this.UnaryExpression();
       left = {
         type: ExpressionType.BinaryExpression,
         operator,
@@ -378,10 +378,37 @@ export class Parser {
   }
 
   /**
+   * UnaryExpression
+   *  : LeftHandSideExpression
+   *  | ADD_OPERATOR UnaryExpression
+   *  | LOGICAL_NOT UnaryExpression
+   */
+  UnaryExpression() {
+    let operator;
+    switch (this.lookahead.type) {
+      case TokenType.ADD_OPERATOR:
+        operator = this.eat(TokenType.ADD_OPERATOR).value;
+        break;
+      case TokenType.LOGICAL_NOT:
+        operator = this.eat(TokenType.LOGICAL_NOT).value;
+        break;
+    }
+    if (operator !== undefined) { // do not check for nul, only check for undefined
+      return {
+        type: ExpressionType.UnaryExpression,
+        operator,
+        argument: this.UnaryExpression(),
+      };
+    }
+    return this.LeftHandExpression();
+  }
+
+
+  /**
    * PrimaryExpression can be:
    * : Literal
    * | ParenthesizedExpression
-   * | LeftHandExpression
+   * | Identifier
    * ;
    */
   PrimaryExpression(): ExpressionNode {
@@ -395,6 +422,8 @@ export class Parser {
         return this.Literal();
       case TokenType.OPEN_PARENTHESIS:
         return this.ParenthesizedExpression();
+      case TokenType.IDENTIFIER:
+        return this.Identifier();
       default:
         return this.LeftHandExpression();
     }
