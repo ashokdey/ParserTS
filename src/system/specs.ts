@@ -41,6 +41,8 @@ export const TokenizationSpecs: SpecType[] = [
   { _regex: /^\bdo\b/, type: TokenType.DO },
   { _regex: /^\bwhile\b/, type: TokenType.WHILE },
   { _regex: /^\bfor\b/, type: TokenType.FOR },
+  { _regex: /^\bfunc\b/, type: TokenType.FUNCTION },
+  { _regex: /^\breturn\b/, type: TokenType.RETURN },
 
   /** IDENTIFIERS */
   { _regex: /^\w+/, type: TokenType.IDENTIFIER },

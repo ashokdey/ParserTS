@@ -60,6 +60,18 @@ export type ForToken = {
   body: ExpressionNode;
 };
 
+export type FunctionToken = {
+  type: StatementType.FunctionDeclaration;
+  name: IdentifierToken;
+  params: IdentifierToken[];
+  body: StatementToken;
+};
+
+export type ReturnToken = {
+  type: StatementType.ReturnStatement;
+  argument: ExpressionNode;
+};
+
 export type VariableToken = {
   type: StatementType;
   declarations: VariableDeclaration[];
@@ -85,7 +97,10 @@ export type StatementToken =
   | VariableToken
   | IfToken
   | WhileToken
-  | DoWhileToken;
+  | DoWhileToken
+  | ForToken
+  | FunctionToken
+  | ReturnToken;
 
 /** tokenizer rules object type */
 export type SpecType = {

@@ -45,6 +45,8 @@ export enum TokenType {
   WHILE = 'while',
   DO = 'do',
   FOR = 'for',
+  FUNCTION = 'func',
+  RETURN = 'return',
   LOGICAL_AND = '&&',
   LOGICAL_OR = '||',
   LOGICAL_NOT = '!',
@@ -65,6 +67,8 @@ export enum StatementType {
   WhileStatement = 'WhileStatement',
   DoWhileStatement = 'DoWhileStatement',
   ForStatement = 'ForStatement',
+  FunctionDeclaration = 'FunctionDeclaration',
+  ReturnStatement = 'ReturnStatement',
 }
 
 export enum ASTType {

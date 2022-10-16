@@ -10,6 +10,7 @@ import {
   ASTNode,
   ExpressionNode,
   IdentifierNode,
+  IdentifierToken,
   LiteralNode,
   StatementNode,
   Token,
@@ -65,6 +66,9 @@ export class Parser {
    * ; empty statement
    * VariableStatement
    * IfStatement
+   * IterationStatement
+   * FunctionDeclaration
+   * ReturnStatement
    */
   Statement(): StatementNode | ExpressionNode {
     switch (this.lookahead.type) {
@@ -80,9 +84,77 @@ export class Parser {
       case TokenType.WHILE:
       case TokenType.FOR:
         return this.IterationStatement();
+      case TokenType.FUNCTION:
+        return this.FunctionDeclaration();
+      case TokenType.RETURN:
+        return this.ReturnStatement();
       default:
         return this.ExpressionStatement();
     }
+  }
+
+  /**
+   * FunctionDeclaration can be:
+   * : 'func' Identifier '(' OptFormalParameterList ')' BlockStatement
+   */
+  FunctionDeclaration(): ExpressionNode {
+    this.eat(TokenType.FUNCTION);
+    // get function name
+    const name = this.Identifier();
+
+    this.eat(TokenType.OPEN_PARENTHESIS);
+
+    // get the optional parameter list
+    const params =
+      this.lookahead.type !== TokenType.CLOSE_PARENTHESIS
+        ? this.FormalParameterList()
+        : [];
+
+    this.eat(TokenType.CLOSE_PARENTHESIS);
+
+    // get the function body which is a block
+    const body = this.BlockStatement();
+
+    return {
+      type: StatementType.FunctionDeclaration,
+      name,
+      params,
+      body,
+    };
+  }
+
+  /**
+   * FormalParameterList can be:
+   * FormalParameterList ',' Identifier
+   */
+  FormalParameterList(): IdentifierToken[] {
+    const params: IdentifierToken[] = [];
+    /**
+     * loop until we are getting ',' and also consume that comma
+     * ex - x, y, z inside a function argument
+     */
+
+    do {
+      params.push(this.Identifier());
+    } while (
+      this.lookahead.type === TokenType.COMMA &&
+      this.eat(TokenType.COMMA)
+    );
+    return params;
+  }
+
+  /**
+   * ReturnStatement can be:
+   *  : 'return' OptionalExpression ';'
+   */
+  ReturnStatement(): ExpressionNode {
+    this.eat(TokenType.RETURN);
+    const argument =
+      this.lookahead.type !== TokenType.SEMI_COLON ? this.Expression() : null;
+    return {
+      type: StatementType.ReturnStatement,
+      argument,
+    };
   }
 
   /**
