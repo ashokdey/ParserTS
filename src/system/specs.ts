@@ -38,6 +38,9 @@ export const TokenizationSpecs: SpecType[] = [
   { _regex: /^\btrue\b/, type: TokenType.TRUE },
   { _regex: /^\bfalse\b/, type: TokenType.FALSE },
   { _regex: /^\bnull\b/, type: TokenType.NULL },
+  { _regex: /^\bdo\b/, type: TokenType.DO },
+  { _regex: /^\bwhile\b/, type: TokenType.WHILE },
+  { _regex: /^\bfor\b/, type: TokenType.FOR },
 
   /** IDENTIFIERS */
   { _regex: /^\w+/, type: TokenType.IDENTIFIER },

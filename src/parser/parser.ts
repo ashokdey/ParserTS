@@ -1,6 +1,11 @@
 import { AST } from '../ast/Factory';
 import { Tokenizer } from '../tokenizer/tokenizer';
-import { ASTType, ExpressionType, TokenType } from '../types/enums';
+import {
+  ASTType,
+  ExpressionType,
+  StatementType,
+  TokenType,
+} from '../types/enums';
 import {
   ASTNode,
   ExpressionNode,
@@ -71,10 +76,80 @@ export class Parser {
         return this.BlockStatement();
       case TokenType.LET:
         return this.VariableStatement();
+      case TokenType.DO:
+      case TokenType.WHILE:
+      case TokenType.FOR:
+        return this.IterationStatement();
       default:
         return this.ExpressionStatement();
     }
   }
+
+  /**
+   * IterationStatement can be:
+   * WhileStatement
+   * DoWhileStatement
+   * ForStatement
+   */
+  IterationStatement(): ExpressionNode {
+    switch (this.lookahead.type) {
+      case TokenType.DO:
+        return this.DoWhileStatement();
+      case TokenType.WHILE:
+        return this.WhileStatement();
+      case TokenType.FOR:
+      // return this.ForStatement();
+    }
+  }
+
+  /**
+   * DoWhileStatement
+   * do `Statement` while( `Expression` ) `;`
+   */
+  DoWhileStatement(): ExpressionNode {
+    this.eat(TokenType.DO);
+    const body = this.Statement();
+
+    this.eat(TokenType.WHILE);
+    this.eat(TokenType.OPEN_PARENTHESIS);
+    const test = this.Expression();
+    this.eat(TokenType.CLOSE_PARENTHESIS);
+
+    this.eat(TokenType.SEMI_COLON);
+
+    return {
+      type: StatementType.DoWhileStatement,
+      body, // Body comes before test in do-while
+      test,
+    };
+  }
+
+  /**
+   * WhileStatement
+   * while ( `Expression` ) `Statement`
+   */
+  WhileStatement(): ExpressionNode {
+    this.eat(TokenType.WHILE);
+    this.eat(TokenType.OPEN_PARENTHESIS);
+    const test = this.Expression();
+    this.eat(TokenType.CLOSE_PARENTHESIS);
+
+    const body = this.Statement();
+
+    return {
+      type: StatementType.WhileStatement,
+      test,
+      body,
+    };
+  }
+
+  // ForStatement(): ExpressionNode {
+  //   return {
+  //     type: StatementType.ForStatement,
+  //     test,
+  //     body
+  //   };
+  // }
 
   /**
    * IfStatement

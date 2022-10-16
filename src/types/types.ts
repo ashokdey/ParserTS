@@ -42,6 +42,24 @@ export type IfToken = {
   alternate: ExpressionNode;
 };
 
+export type WhileToken = {
+  type: StatementType.WhileStatement;
+  test: ExpressionNode;
+  body: ExpressionNode;
+};
+
+export type DoWhileToken = {
+  type: StatementType.DoWhileStatement;
+  test: ExpressionNode;
+  body: ExpressionNode;
+};
+
+export type ForToken = {
+  type: StatementType.ForStatement;
+  test: ExpressionNode;
+  body: ExpressionNode;
+};
+
 export type VariableToken = {
   type: StatementType;
   declarations: VariableDeclaration[];
@@ -65,7 +83,9 @@ export type StatementToken =
   | BlockToken
   | BinaryExpressionToken
   | VariableToken
-  | IfToken;
+  | IfToken
+  | WhileToken
+  | DoWhileToken;
 
 /** tokenizer rules object type */
 export type SpecType = {

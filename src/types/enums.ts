@@ -42,6 +42,9 @@ export enum TokenType {
   TRUE = 'true',
   FALSE = 'false',
   NULL = 'null',
+  WHILE = 'while',
+  DO = 'do',
+  FOR = 'for',
   LOGICAL_AND = '&&',
   LOGICAL_OR = '||',
   LOGICAL_NOT = '!',
@@ -58,6 +61,10 @@ export enum StatementType {
   EmptyStatement = 'EmptyStatement',
   VariableStatement = 'VariableStatement',
   IfStatement = 'IfStatement',
+  IterationStatement = 'IterationStatement',
+  WhileStatement = 'WhileStatement',
+  DoWhileStatement = 'DoWhileStatement',
+  ForStatement = 'ForStatement',
 }
 
 export enum ASTType {
