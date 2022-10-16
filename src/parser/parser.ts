@@ -133,7 +133,7 @@ export class Parser {
     // OptVariableInitializer
     const init =
       this.lookahead.type !== TokenType.SEMI_COLON &&
-        this.lookahead.type !== TokenType.COMMA
+      this.lookahead.type !== TokenType.COMMA
         ? this.VariableInitializer()
         : null;
     return this.factory.VariableDeclaration(id, init);
@@ -393,7 +393,8 @@ export class Parser {
         operator = this.eat(TokenType.LOGICAL_NOT).value;
         break;
     }
-    if (operator !== undefined) { // do not check for nul, only check for undefined
+    if (operator !== undefined) {
+      // do not check for nul, only check for undefined
       return {
         type: ExpressionType.UnaryExpression,
         operator,
@@ -402,7 +403,6 @@ export class Parser {
     }
     return this.LeftHandExpression();
   }
-
 
   /**
    * PrimaryExpression can be:
