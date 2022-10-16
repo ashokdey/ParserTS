@@ -133,7 +133,7 @@ export class Parser {
     // OptVariableInitializer
     const init =
       this.lookahead.type !== TokenType.SEMI_COLON &&
-        this.lookahead.type !== TokenType.COMMA
+      this.lookahead.type !== TokenType.COMMA
         ? this.VariableInitializer()
         : null;
     return this.factory.VariableDeclaration(id, init);
@@ -238,36 +238,33 @@ export class Parser {
     return this.eat(TokenType.COMPLEX_ASSIGNMENT);
   }
 
-  LogicalExpression(
-    expBuilder: string,
-    tType: TokenType,
-  ) {
+  LogicalExpression(expBuilder: string, tType: TokenType) {
     return this.DynamicExpression(
       expBuilder,
       tType,
-      ExpressionType.LogicalExpression
+      ExpressionType.LogicalExpression,
     );
   }
 
   /**
- * Logical OR Expression
- *  x || y
- * 
- * LogicalORExpression can be:
- * LogicalANDExpression LOGICAL_OR LogicalORExpression
- * or LogicalORExpression
- */
+   * Logical OR Expression
+   *  x || y
+   *
+   * LogicalORExpression can be:
+   * LogicalANDExpression LOGICAL_OR LogicalORExpression
+   * or LogicalORExpression
+   */
   LogicalORExpression() {
     return this.LogicalExpression(
       ExpressionType.LogicalANDExpression,
-      TokenType.LOGICAL_OR
+      TokenType.LOGICAL_OR,
     );
   }
 
   /**
    * Logical AND Expression
    *  x && y
-   * 
+   *
    * LogicalANDExpression can be:
    * EqualityExpression LOGICAL_AND LogicalANDExpression
    * or EqualityExpression
@@ -275,7 +272,7 @@ export class Parser {
   LogicalANDExpression() {
     return this.LogicalExpression(
       ExpressionType.EqualityExpression,
-      TokenType.LOGICAL_AND
+      TokenType.LOGICAL_AND,
     );
   }
 
@@ -293,7 +290,7 @@ export class Parser {
     return this.DynamicExpression(
       ExpressionType.RelationalExpression,
       TokenType.EQUALITY_OPERATOR,
-      ExpressionType.BinaryExpression
+      ExpressionType.BinaryExpression,
     );
   }
 
@@ -312,7 +309,7 @@ export class Parser {
     return this.DynamicExpression(
       ExpressionType.AdditiveExpression,
       TokenType.RELATIONAL_OPERATOR,
-      ExpressionType.BinaryExpression
+      ExpressionType.BinaryExpression,
     );
   }
 
@@ -322,7 +319,7 @@ export class Parser {
   DynamicExpression(
     expBuilder: string,
     tType: TokenType,
-    expType: ExpressionType
+    expType: ExpressionType,
   ): ExpressionNode {
     let left = this[expBuilder]();
     while (this.lookahead.type === tType) {

@@ -12,7 +12,7 @@ export enum ExpressionType {
   EqualityExpression = 'EqualityExpression',
   RelationalExpression = 'RelationalExpression',
   LogicalExpression = 'LogicalExpression',
-  LogicalANDExpression = 'LogicalANDExpression'
+  LogicalANDExpression = 'LogicalANDExpression',
 }
 
 export enum DeclarationType {
