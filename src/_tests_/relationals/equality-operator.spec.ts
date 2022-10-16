@@ -168,4 +168,46 @@ describe('Testing Equality Operators', () => {
     }`);
     expect(ast).toMatchObject(res);
   });
+
+  it('Should return Boolean Literal on not equality with `null`', () => {
+    const parser = new Parser();
+    const ast = parser.parse(`x + 5  > 10 != null;`);
+    const res = JSON.parse(`{
+      "type": "Program",
+      "body": [
+        {
+          "type": "ExpressionStatement",
+          "expression": {
+            "type": "BinaryExpression",
+            "operator": "!=",
+            "left": {
+              "type": "BinaryExpression",
+              "operator": ">",
+              "left": {
+                "type": "BinaryExpression",
+                "operator": "+",
+                "left": {
+                  "type": "IDENTIFIER",
+                  "name": "x"
+                },
+                "right": {
+                  "type": "NumericLiteral",
+                  "value": 5
+                }
+              },
+              "right": {
+                "type": "NumericLiteral",
+                "value": 10
+              }
+            },
+            "right": {
+              "type": "NullLiteral",
+              "value": null
+            }
+          }
+        }
+      ]
+    }`);
+    expect(ast).toMatchObject(res);
+  });
 });

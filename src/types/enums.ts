@@ -9,7 +9,10 @@ export enum ExpressionType {
   BinaryExpression = 'BinaryExpression',
   AssignmentExpression = 'AssignmentExpression',
   AdditiveExpression = 'AdditiveExpression',
+  EqualityExpression = 'EqualityExpression',
   RelationalExpression = 'RelationalExpression',
+  LogicalExpression = 'LogicalExpression',
+  LogicalANDExpression = 'LogicalANDExpression'
 }
 
 export enum DeclarationType {
@@ -38,6 +41,8 @@ export enum TokenType {
   TRUE = 'true',
   FALSE = 'false',
   NULL = 'null',
+  LOGICAL_AND = '&&',
+  LOGICAL_OR = '||',
 }
 
 export enum ProgramType {

@@ -133,7 +133,7 @@ export class Parser {
     // OptVariableInitializer
     const init =
       this.lookahead.type !== TokenType.SEMI_COLON &&
-      this.lookahead.type !== TokenType.COMMA
+        this.lookahead.type !== TokenType.COMMA
         ? this.VariableInitializer()
         : null;
     return this.factory.VariableDeclaration(id, init);
@@ -195,12 +195,12 @@ export class Parser {
 
   /**
    * AssignmentExpression
-   * : EqualityExpression
+   * : LogicalORExpression
    * | LeftHandSideExpression AssignmentOperator AssignmentExpression
    * ;
    */
   AssignmentExpression(): ExpressionNode {
-    const left = this.EqualityExpression();
+    const left = this.LogicalORExpression();
     if (!this.isAssignmentOperator(this.lookahead.type)) {
       return left;
     }
@@ -238,6 +238,47 @@ export class Parser {
     return this.eat(TokenType.COMPLEX_ASSIGNMENT);
   }
 
+  LogicalExpression(
+    expBuilder: string,
+    tType: TokenType,
+  ) {
+    return this.DynamicExpression(
+      expBuilder,
+      tType,
+      ExpressionType.LogicalExpression
+    );
+  }
+
+  /**
+ * Logical OR Expression
+ *  x || y
+ * 
+ * LogicalORExpression can be:
+ * LogicalANDExpression LOGICAL_OR LogicalORExpression
+ * or LogicalORExpression
+ */
+  LogicalORExpression() {
+    return this.LogicalExpression(
+      ExpressionType.LogicalANDExpression,
+      TokenType.LOGICAL_OR
+    );
+  }
+
+  /**
+   * Logical AND Expression
+   *  x && y
+   * 
+   * LogicalANDExpression can be:
+   * EqualityExpression LOGICAL_AND LogicalANDExpression
+   * or EqualityExpression
+   */
+  LogicalANDExpression() {
+    return this.LogicalExpression(
+      ExpressionType.EqualityExpression,
+      TokenType.LOGICAL_AND
+    );
+  }
+
   /**
    * EQUALITY_OPERATOR: ==, !=
    * x == y
@@ -249,9 +290,10 @@ export class Parser {
    * ;
    */
   EqualityExpression(): ExpressionNode {
-    return this.DynamicBinaryExpression(
+    return this.DynamicExpression(
       ExpressionType.RelationalExpression,
       TokenType.EQUALITY_OPERATOR,
+      ExpressionType.BinaryExpression
     );
   }
 
@@ -267,22 +309,27 @@ export class Parser {
    *  | AdditiveExpression RELATIONAL_OPERATOR RelationalExpression
    */
   RelationalExpression(): ExpressionNode {
-    return this.DynamicBinaryExpression(
+    return this.DynamicExpression(
       ExpressionType.AdditiveExpression,
       TokenType.RELATIONAL_OPERATOR,
+      ExpressionType.BinaryExpression
     );
   }
 
-  DynamicBinaryExpression(
+  /**
+   * Create a binary expression generator function Dynamically
+   */
+  DynamicExpression(
     expBuilder: string,
     tType: TokenType,
+    expType: ExpressionType
   ): ExpressionNode {
     let left = this[expBuilder]();
     while (this.lookahead.type === tType) {
       const operator = this.eat(tType).value;
       const right = this[expBuilder]();
       left = {
-        type: ExpressionType.BinaryExpression,
+        type: expType,
         operator,
         left,
         right,
