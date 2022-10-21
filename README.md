@@ -1,6 +1,10 @@
-# parserTS: An AST generator implemented in TypeScript
+# ParserTS 
 
-### What Does Parser Mean?
+### An AST generator implemented in TypeScript
+
+![Parser](.github/parser.png)
+
+### What Does Parser Mean? <sup><a href="https://www.techopedia.com/definition/3854/parser">source</a></sup>
 
 A parser is a compiler or interpreter component that breaks data into smaller elements for easy translation into another language. A parser takes input in the form of a sequence of tokens, interactive commands, or program instructions and breaks them up into parts that can be used by other components in programming.
 
@@ -85,13 +89,18 @@ The above code will be converted into an AST like:
 
 ```
 
-### Upcoming 
+### Upcoming Developments
 
 - Support for function call
 - Support for Classes and Objects
+- CLI tool
 
 
 ### Usages
 
-Type your code in the `src/index.ts`
-Run command to produce ast `npm run dev >> ast.json`
+- Type your code in the `src/index.ts`
+- Run command to produce ast `npm run dev >> ast.json`
+
+### Notes
+
+Thanks to [Dmitry Soshnikov](http://dmitrysoshnikov.com/) for his course on [Programming Languages](https://www.dmitrysoshnikov.education/p/programming-languages-design-ultimate-bundle-2nd-edition)
