@@ -1,5 +1,5 @@
-import { TokenType } from '../types/enums';
-import { SpecType } from '../types/types';
+import { TokenType } from './enums';
+import { SpecType } from './types';
 
 export const TokenizationSpecs: SpecType[] = [
   /** numbers  */

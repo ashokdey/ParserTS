@@ -1,4 +1,4 @@
-import { Parser } from './parser/parser';
+import { Parser } from './system/parser';
 
 const parser = new Parser();
 const ast = parser.parse(`

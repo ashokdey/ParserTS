@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2015",
+    "target": "ES5",
     "types": ["node", "jest"],
     "module": "commonjs",
     "moduleResolution": "node",
@@ -8,6 +8,6 @@
     "outDir": "./dist"
   },
   "compileOnSave": true,
-  "include": ["./src"],
+  "include": ["./src", "./test"],
   "exclude": ["**/*.test.*", "**/__mocks__/*", "**/__tests__/*"]
 }
