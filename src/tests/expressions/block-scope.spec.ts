@@ -1,4 +1,4 @@
-import { Parser } from '../../src/system/parser';
+import { Parser } from '../../system/parser';
 
 describe('Testing block scoped statements', () => {
   it('Should return a block scoped statements', () => {

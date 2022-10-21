@@ -1,4 +1,4 @@
-import { Parser } from '../../src/system/parser';
+import { Parser } from '../../system/parser';
 
 describe('Testing Variable Declaration', () => {
   it('Should return a single variable declaration', () => {

@@ -1,4 +1,4 @@
-import { Parser } from '../../src/system/parser';
+import { Parser } from '../../system/parser';
 
 describe('Testing If-Statements', () => {
   it('Should return the test, consequent and alternate for single if statements', () => {

@@ -1,4 +1,4 @@
-import { Parser } from '../../src/system/parser';
+import { Parser } from '../../system/parser';
 
 describe('Testing For Statements', () => {
   it.skip('Should return a ForStatement', () => {

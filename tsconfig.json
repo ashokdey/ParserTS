@@ -8,6 +8,6 @@
     "outDir": "./dist"
   },
   "compileOnSave": true,
-  "include": ["./src", "./test"],
+  "include": ["./src"],
   "exclude": ["**/*.test.*", "**/__mocks__/*", "**/__tests__/*"]
 }

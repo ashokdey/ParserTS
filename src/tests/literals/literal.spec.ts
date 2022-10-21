@@ -1,4 +1,4 @@
-import { Parser } from '../../src/system/parser';
+import { Parser } from '../../system/parser';
 
 describe('Testing the Literals', () => {
   describe('Numerical Literal Tests', () => {

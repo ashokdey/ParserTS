@@ -1,4 +1,4 @@
-import { Parser } from '../src/system/parser';
+import { Parser } from '../system/parser';
 
 describe('Testing Empty Statements', () => {
   it('Should return a numeric literal', () => {

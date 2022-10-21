@@ -1,4 +1,4 @@
-import { Parser } from '../../src/system/parser';
+import { Parser } from '../../system/parser';
 
 describe('Testing Relational Operators', () => {
   it('Should return a relational expression with accurate precedence', () => {
